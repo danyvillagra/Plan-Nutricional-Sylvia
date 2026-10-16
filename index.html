@@ -787,6 +787,11 @@
       </div>
 
       <div class="header-controls">
+        <!-- BOTÓN INSTALAR APP MÓVIL -->
+        <button id="pwaInstallBtn" class="btn" style="background: #fbbf24; color: #78350f; font-weight: 800; border: 1px solid #d97706;" onclick="triggerPwaInstall()">
+          📲 Instalar en mi Teléfono
+        </button>
+
         <!-- SELECTOR DE COMENSALES (PORCIONES) -->
         <div class="diners-select-wrapper" title="Multiplicador de Porciones">
           <span>👥 Comensales:</span>
@@ -2756,10 +2761,83 @@
       }
     }
 
+    
+    // ==========================================
+    // INSTALACIÓN PWA
+    // ==========================================
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const btn = document.getElementById('pwaInstallBtn');
+      if (btn) {
+        btn.innerHTML = "📲 ¡Toca aquí para Instalar!";
+        btn.style.animation = "pulse 1.5s infinite";
+      }
+    });
+
+    function triggerPwaInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choice) => {
+          if (choice.outcome === 'accepted') {
+            alert("¡App instalada con éxito en tu pantalla de inicio!");
+            const btn = document.getElementById('pwaInstallBtn');
+            if (btn) btn.style.display = 'none';
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        openInstallHelpModal();
+      }
+    }
+
+    function openInstallHelpModal() {
+      document.getElementById('installHelpModal').classList.add('open');
+    }
+
+    function closeInstallHelpModal() {
+      document.getElementById('installHelpModal').classList.remove('open');
+    }
+
     // Inicializar al cargar el DOM
     document.addEventListener("DOMContentLoaded", () => {
       initApp();
     });
   </script>
+
+  <!-- MODAL DE AYUDA DE INSTALACIÓN -->
+  <div class="modal-overlay" id="installHelpModal" onclick="if(event.target===this) closeInstallHelpModal()">
+    <div class="modal-content" style="max-width: 520px;">
+      <div class="modal-header">
+        <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--gray-900);">📲 Cómo Instalar la App en tu Celular</h2>
+        <button class="modal-close-btn" onclick="closeInstallHelpModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="font-size: 0.88rem; line-height: 1.6;">
+        <div style="background: #fef3c7; border: 1px solid #fde68a; padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem; color: #92400e;">
+          <strong>⚠️ Si abriste el enlace desde WhatsApp:</strong><br>
+          WhatsApp bloquea la instalación directa. Toca los <strong>tres puntos arriba a la derecha</strong> y elige <strong>"Abrir en Chrome"</strong> o <strong>"Abrir en el navegador"</strong>.
+        </div>
+
+        <h4 style="color: var(--primary-dark); margin-bottom: 0.35rem;">🌐 En Google Chrome (Android):</h4>
+        <ol style="padding-left: 1.25rem; margin-bottom: 1rem;">
+          <li>Desliza la pantalla un poquito hacia arriba para que aparezca la barra de dirección.</li>
+          <li>Toca los <strong>3 puntos verticales ⋮</strong> arriba a la derecha.</li>
+          <li>Selecciona <strong>"Instalar aplicación"</strong> o <strong>"Agregar a la pantalla principal"</strong>.</li>
+        </ol>
+
+        <h4 style="color: #7c3aed; margin-bottom: 0.35rem;">🪐 En Samsung Internet (Navegador Samsung):</h4>
+        <ol style="padding-left: 1.25rem; margin-bottom: 1rem;">
+          <li>Fíjate en la barra de dirección arriba: muchas veces hay un <strong>icono de descarga ⤓</strong> o un <strong>+</strong> al lado del link. Tócalo.</li>
+          <li>O toca las <strong>tres rayitas ☰ abajo a la derecha</strong>.</li>
+          <li>Toca <strong>"+ Agregar página a"</strong> y luego <strong>"Pantalla de inicio"</strong>.</li>
+        </ol>
+
+        <button class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;" onclick="closeInstallHelpModal()">Entendido</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

@@ -1,0 +1,2765 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RECETAS DEL PLAN NUTRICIONAL</title>
+  
+  <!-- PWA & Meta tags -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <meta name="theme-color" content="#059669">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Plan Nutricional">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-dark: #047857;
+      --primary-light: #ecfdf5;
+      --primary-border: #a7f3d0;
+      --accent: #0284c7;
+      --accent-light: #e0f2fe;
+      --danger: #e11d48;
+      --danger-light: #ffe4e6;
+      --warning: #d97706;
+      --warning-light: #fef3c7;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --gray-800: #1e293b;
+      --gray-900: #0f172a;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+      background-color: #f8fafc;
+      color: var(--gray-800);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, #065f46 0%, #059669 100%);
+      color: white;
+      padding: 1.25rem 1rem;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+
+    .header-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      background: rgba(255, 255, 255, 0.2);
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .logo-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-subtitle {
+      font-size: 0.8rem;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .diners-select-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 0.35rem 0.65rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: white;
+      font-weight: 600;
+    }
+
+    .diners-select-wrapper select {
+      background: white;
+      border: none;
+      color: var(--gray-800);
+      font-weight: 700;
+      padding: 0.25rem 0.5rem;
+      border-radius: 5px;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    .nav-tabs {
+      display: flex;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 4px;
+      border-radius: 10px;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: #e2e8f0;
+      padding: 0.5rem 0.85rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-btn.active {
+      background: white;
+      color: var(--primary-dark);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* MAIN CONTAINER */
+    main {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ACTION BAR */
+    .action-bar {
+      background: white;
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--gray-200);
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.55rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all 0.18s ease;
+    }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-dark); }
+
+    .btn-secondary { background: var(--gray-100); color: var(--gray-700); border: 1px solid var(--gray-300); }
+    .btn-secondary:hover { background: var(--gray-200); }
+
+    .btn-danger { background: var(--danger-light); color: var(--danger); border: 1px solid #fecdd3; }
+    .btn-danger:hover { background: #fecdd3; }
+
+    .btn-accent { background: var(--accent-light); color: var(--accent); border: 1px solid #bae6fd; }
+    .btn-accent:hover { background: #bae6fd; }
+
+    .btn-whatsapp { background: #25D366; color: white; }
+    .btn-whatsapp:hover { background: #1eb855; }
+
+    /* WEEKLY PLANNER GRID */
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .day-card {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .day-card:hover {
+      box-shadow: var(--shadow);
+      border-color: var(--primary-border);
+    }
+
+    .day-header {
+      background: #f8fafc;
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .day-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--gray-800);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .day-badge {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.18rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid var(--primary-border);
+    }
+
+    .meals-container {
+      padding: 0.85rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      flex: 1;
+    }
+
+    .meal-block {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 0.65rem 0.75rem;
+    }
+
+    .meal-label {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .meal-label.desayuno { color: #d97706; }
+    .meal-label.almuerzo { color: #059669; }
+    .meal-label.merienda { color: #7c3aed; }
+    .meal-label.cena { color: #0f766e; }
+
+    .recipe-select {
+      width: 100%;
+      padding: 0.42rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid var(--gray-300);
+      background: white;
+      font-size: 0.82rem;
+      color: var(--gray-800);
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .recipe-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+    }
+
+    .meal-info-btn {
+      font-size: 0.74rem;
+      color: var(--accent);
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      font-weight: 600;
+      padding: 0;
+    }
+    .meal-info-btn:hover {
+      text-decoration: underline;
+    }
+
+    /* SHOPPING LIST TAB */
+    .shopping-container {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 860px) {
+      .shopping-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .shopping-card {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-sm);
+      padding: 1.25rem;
+    }
+
+    .category-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .category-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--gray-700);
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 0.35rem;
+      margin-bottom: 0.55rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ingredient-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .ingredient-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.42rem 0.65rem;
+      background: var(--gray-50);
+      border-radius: 7px;
+      font-size: 0.85rem;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .ingredient-item:hover {
+      background: #f1f5f9;
+      border-color: var(--gray-200);
+    }
+
+    .ingredient-item.checked {
+      opacity: 0.5;
+      text-decoration: line-through;
+      background: #f8fafc;
+    }
+
+    .ingredient-left {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .ingredient-checkbox {
+      width: 17px;
+      height: 17px;
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+
+    .ingredient-qty {
+      font-weight: 700;
+      color: var(--primary-dark);
+      background: var(--primary-light);
+      padding: 0.15rem 0.45rem;
+      border-radius: 5px;
+      font-size: 0.78rem;
+    }
+
+    /* PANTRY & SUGGESTIONS TAB */
+    .pantry-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .pantry-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pantry-checklist {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 0.5rem;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .pantry-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.4rem 0.6rem;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 7px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
+    }
+
+    .pantry-chip.selected {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+
+    .suggestion-card {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid var(--gray-200);
+      padding: 0.9rem;
+      margin-bottom: 0.8rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .badge-match {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 0.18rem 0.48rem;
+      border-radius: 999px;
+      display: inline-block;
+    }
+    .badge-match.full { background: #dcfce7; color: #15803d; }
+    .badge-match.almost { background: #fef9c3; color: #854d0e; }
+
+    /* RECIPES CATALOG TAB */
+    .catalog-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .filter-chip {
+      background: white;
+      border: 1px solid var(--gray-300);
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-chip.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 240px;
+      padding: 0.45rem 0.8rem;
+      border-radius: 7px;
+      border: 1px solid var(--gray-300);
+      font-size: 0.88rem;
+    }
+    .search-box:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .recipes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .recipe-card {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .recipe-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .recipe-card-header {
+      padding: 0.9rem;
+      background: #fdfdfd;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .recipe-badge-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.4rem;
+    }
+
+    .recipe-source-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      background: #f1f5f9;
+      color: #475569;
+      text-transform: uppercase;
+    }
+
+    .recipe-card-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      line-height: 1.3;
+    }
+
+    .recipe-card-body {
+      padding: 0.9rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-size: 0.84rem;
+    }
+
+    .recipe-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      color: var(--gray-600);
+      font-size: 0.78rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .recipe-ingredients-preview {
+      color: var(--gray-600);
+      margin-bottom: 0.85rem;
+      line-height: 1.35;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 1rem;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      padding: 1.15rem 1.4rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 10;
+    }
+
+    .modal-close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray-600);
+      padding: 0 0.5rem;
+    }
+
+    .modal-body {
+      padding: 1.4rem;
+      line-height: 1.55;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 0.35rem;
+      color: var(--gray-700);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: 7px;
+      border: 1px solid var(--gray-300);
+      font-size: 0.88rem;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .rule-callout {
+      background: var(--warning-light);
+      border-left: 4px solid var(--warning);
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      margin-bottom: 1.25rem;
+      font-size: 0.86rem;
+    }
+
+    .rule-callout-danger {
+      background: var(--danger-light);
+      border-left: 4px solid var(--danger);
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      margin-bottom: 1.25rem;
+      font-size: 0.86rem;
+    }
+
+    /* PRINT STYLES FOR EXPORTING TO PDF */
+    @media print {
+      header, .action-bar, .nav-tabs, footer, .modal-overlay, .catalog-filters {
+        display: none !important;
+      }
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      main {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .tab-content {
+        display: block !important;
+      }
+      #tab-pantry, #tab-catalog, #tab-rules {
+        display: none !important;
+      }
+      .day-card {
+        page-break-inside: avoid;
+        box-shadow: none !important;
+        border: 1px solid #999 !important;
+        margin-bottom: 1rem !important;
+      }
+      .print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    .print-header {
+      display: none;
+    }
+
+    /* FOOTER */
+    footer {
+      background: white;
+      border-top: 1px solid var(--gray-200);
+      padding: 1.5rem 1rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--gray-600);
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PRINT ONLY HEADER -->
+  <div class="print-header">
+    <h1 style="font-size: 1.6rem; color: #047857;">RECETAS DEL PLAN NUTRICIONAL</h1>
+    <p style="font-size: 0.9rem; color: #444;">Menú Semanal Planificado para Sylvia • 4 Comidas Diarias</p>
+    <hr style="margin: 0.75rem 0;">
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <div class="logo-area">
+        <div class="logo-icon">🥗</div>
+        <div>
+          <div class="logo-title">RECETAS DEL PLAN NUTRICIONAL</div>
+          <div class="logo-subtitle">Planificador Semanal 4 Comidas • Lista de Compras • Despensa & Reemplazos</div>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <!-- SELECTOR DE COMENSALES (PORCIONES) -->
+        <div class="diners-select-wrapper" title="Multiplicador de Porciones">
+          <span>👥 Comensales:</span>
+          <select id="dinersSelect" onchange="changeDiners(this.value)">
+            <option value="1" selected>1 persona (Sylvia)</option>
+            <option value="2">2 personas</option>
+            <option value="3">3 personas</option>
+            <option value="4">4 personas</option>
+          </select>
+        </div>
+
+        <nav class="nav-tabs">
+          <button class="nav-btn active" onclick="switchTab('planner')">📅 Menú Semanal</button>
+          <button class="nav-btn" onclick="switchTab('shopping')">🛒 Lista de Compras</button>
+          <button class="nav-btn" onclick="switchTab('pantry')">🍳 Mi Despensa & Reemplazos</button>
+          <button class="nav-btn" onclick="switchTab('catalog')">📖 Recetario (<span id="totalRecipesBadge">29</span>)</button>
+          <button class="nav-btn" onclick="switchTab('rules')">⚖️ Reglas & Alimentos</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- TAB 1: PLANIFICADOR DE MENÚ SEMANAL (5 COMIDAS DIARIAS) -->
+    <section id="tab-planner" class="tab-content active">
+      <div class="action-bar">
+        <div>
+          <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--gray-900);">Planificación Semanal (4 Comidas al Día)</h2>
+          <p style="font-size: 0.83rem; color: var(--gray-600);">Desayuno • Almuerzo • Merienda • Cena con porciones exactas.</p>
+        </div>
+        <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
+          <button class="btn btn-primary" onclick="loadOfficialPlan()">✨ Cargar Plan Oficial Sylvia</button>
+          <button class="btn btn-accent" onclick="generateRandomPlan()">🎲 Menú Variado</button>
+          <button class="btn btn-whatsapp" onclick="shareWeeklyMenuWhatsApp()">💬 WhatsApp</button>
+          <button class="btn btn-secondary" onclick="exportWeeklyMenuPDF()">📄 Exportar PDF</button>
+          <button class="btn btn-danger" onclick="clearPlan()">🗑️ Limpiar</button>
+        </div>
+      </div>
+
+      <div class="days-grid" id="daysGrid">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </section>
+
+    <!-- TAB 2: LISTA DE COMPRAS -->
+    <section id="tab-shopping" class="tab-content">
+      <div class="action-bar">
+        <div>
+          <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--gray-900);">Lista de Compras Inteligente</h2>
+          <p style="font-size: 0.83rem; color: var(--gray-600);">Calculada automáticamente para <strong id="shoppingDinersLabel">1 persona</strong> según el menú de 7 días.</p>
+        </div>
+        <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
+          <button class="btn btn-whatsapp" onclick="shareShoppingListWhatsApp()">💬 Enviar a WhatsApp</button>
+          <button class="btn btn-primary" onclick="copyShoppingList()">📋 Copiar Lista</button>
+          <button class="btn btn-secondary" onclick="printShoppingList()">🖨️ Imprimir / PDF</button>
+        </div>
+      </div>
+
+      <div class="shopping-container">
+        <div class="shopping-card" id="shoppingCategories">
+          <!-- Dynamically populated -->
+        </div>
+
+        <div>
+          <div class="shopping-card" style="margin-bottom: 1.25rem;">
+            <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--primary-dark);">📊 Resumen de la Semana</h3>
+            <p style="font-size: 0.85rem; margin-bottom: 0.4rem;">Comidas programadas: <strong id="totalMealsCount">0</strong></p>
+            <p style="font-size: 0.85rem; margin-bottom: 0.4rem;">Ingredientes únicos: <strong id="uniqueIngredientsCount">0</strong></p>
+            <p style="font-size: 0.85rem; margin-bottom: 0.8rem;">Multiplicador de comensales: <strong id="summaryDinersCount">x1</strong></p>
+            
+            <div style="background: var(--primary-light); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--primary-border);">
+              <small style="color: var(--primary-dark); font-weight: 700; display: block; margin-bottom: 0.2rem;">💡 Consejos Clave para el Supermercado:</small>
+              <small style="color: var(--gray-700); line-height: 1.45; display: block;">
+                • Atún: siempre <em>al agua</em> (no en aceite).<br>
+                • Yogurt y queso blanco: estrictamente <em>descremados</em> (0% grasa).<br>
+                • Comprar 1 aerosol de rocío vegetal (Fritolín).<br>
+                • Frutas permitidas: manzana, pera, durazno, ciruela fresca, naranja, mamón.<br>
+                • Cereales: Avena tradicional Quaker o All Bran sin azúcar.
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: MI DESPENSA & REEMPLAZOS INTELIGENTES -->
+    <section id="tab-pantry" class="tab-content">
+      <div class="action-bar">
+        <div>
+          <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--gray-900);">¿Qué tienes en tu cocina?</h2>
+          <p style="font-size: 0.83rem; color: var(--gray-600);">Marca los ingredientes disponibles. La app te dirá qué cocinar y qué sustituciones autorizadas realizar.</p>
+        </div>
+        <div style="display: flex; gap: 0.45rem;">
+          <button class="btn btn-secondary" onclick="selectAllPantry(true)">Marcar Todos</button>
+          <button class="btn btn-secondary" onclick="selectAllPantry(false)">Desmarcar</button>
+        </div>
+      </div>
+
+      <div class="pantry-grid">
+        <div class="shopping-card">
+          <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--gray-800);">Selecciona tus ingredientes disponibles:</h3>
+          <div class="pantry-checklist" id="pantryChecklist">
+            <!-- Populated by JavaScript -->
+          </div>
+        </div>
+
+        <div>
+          <div class="shopping-card" style="margin-bottom: 1.25rem;">
+            <h3 style="font-size: 1rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 0.5rem;">💡 Sugerencias y Reemplazos Permitidos</h3>
+            <div id="pantryReplacementsAdvice" style="margin-bottom: 0.8rem;">
+              <!-- Advice generated dynamically -->
+            </div>
+          </div>
+
+          <div class="shopping-card">
+            <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;">Recetas que puedes cocinar hoy:</h3>
+            <div id="pantryRecipeMatches">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: RECETARIO COMPLETO & CREAR RECETAS -->
+    <section id="tab-catalog" class="tab-content">
+      <div class="action-bar">
+        <div>
+          <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--gray-900);">Catálogo Completo de Recetas Permitidas</h2>
+          <p style="font-size: 0.83rem; color: var(--gray-600);">Recetas del Plan Sylvia, Nutri Maga, Investigación Web y tus recetas personalizadas.</p>
+        </div>
+        <button class="btn btn-primary" onclick="openCreateRecipeModal()">➕ Crear Nueva Receta</button>
+      </div>
+
+      <div class="catalog-filters">
+        <input type="text" id="recipeSearch" class="search-box" placeholder="🔍 Buscar por nombre o ingrediente (pollo, zapallito, atún, avena...)" oninput="filterRecipes()">
+        <button class="filter-chip active" onclick="setFilter('all', this)">Todas</button>
+        <button class="filter-chip" onclick="setFilter('desayuno', this)">Desayuno</button>
+        <button class="filter-chip" onclick="setFilter('almuerzo', this)">Almuerzo</button>
+        <button class="filter-chip" onclick="setFilter('merienda', this)">Merienda</button>
+        <button class="filter-chip" onclick="setFilter('cena', this)">Cena</button>
+        <button class="filter-chip" onclick="setFilter('pollo', this)">Pollo</button>
+        <button class="filter-chip" onclick="setFilter('pescado', this)">Pescado / Atún</button>
+        <button class="filter-chip" onclick="setFilter('carne', this)">Carne Vacuna</button>
+        <button class="filter-chip" onclick="setFilter('souffle', this)">Soufflés / Huevos</button>
+        <button class="filter-chip" onclick="setFilter('custom', this)">Mis Recetas 🌟</button>
+      </div>
+
+      <div class="recipes-grid" id="recipesCatalogGrid">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </section>
+
+    <!-- TAB 5: REGLAS, PORCIONES Y SEMÁFORO DE ALIMENTOS -->
+    <section id="tab-rules" class="tab-content">
+      <div class="action-bar">
+        <div>
+          <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--gray-900);">Guía de Reglas, Porciones y Alimentos Permitidos vs Prohibidos</h2>
+          <p style="font-size: 0.83rem; color: var(--gray-600);">Consulta los fundamentos clínicos y las reglas inquebrantables del plan.</p>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+        <div class="shopping-card">
+          <div class="rule-callout" style="border-color: #059669; background: #ecfdf5;">
+            <h3 style="color: #065f46; font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem;">🟢 ALIMENTOS PERMITIDOS Y EQUIVALENCIAS</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; line-height: 1.6; color: #065f46;">
+              <li><strong>Pechuga de Pollo:</strong> 150g a 200g (crudo) / 125g en rellenos.</li>
+              <li><strong>Carne Magra Vacuna (Bife / Lomo):</strong> 80g a 100g cocido (150g crudo sin grasa).</li>
+              <li><strong>Pescado Blanco (Merluza / Corvina):</strong> 200g a la plancha o papillote.</li>
+              <li><strong>Atún al Agua:</strong> 100g (1 lata escurrida).</li>
+              <li><strong>Huevos:</strong> 2 huevos enteros (100g) o 1 huevo + 2 claras.</li>
+              <li><strong>Vegetales de Hoja y Agua (Libres):</strong> Hasta 480g por plato (lechuga, tomate, pepino, acelga, espinaca, zapallito verde, repollo).</li>
+              <li><strong>Vegetales Controlados:</strong> Zanahoria (máx 100g rallada), Choclo (máx 100g).</li>
+              <li><strong>Frutas Permitidas:</strong> Manzana, pera, durazno, ciruela fresca, naranja, mamón (100g a 150g).</li>
+              <li><strong>Lácteos:</strong> 125g yogurt descremado, 35g queso blanco descremado, leche 0%.</li>
+              <li><strong>Cereales:</strong> 2 a 3 cucharadas de avena Quaker o cereales sin azúcar (All Bran).</li>
+              <li><strong>Grasas:</strong> Fritolín (rocío vegetal) libre. Máx 1 cdta de aceite crudo.</li>
+            </ul>
+          </div>
+
+          <div class="shopping-card" style="margin-top: 1rem;">
+            <h4 style="font-size: 0.92rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--primary-dark);">💧 Regla de Hidratación</h4>
+            <p style="font-size: 0.83rem; line-height: 1.5; color: var(--gray-700);">
+              Beber como mínimo <strong>2 litros diarios de agua</strong>. Se permite consumo libre de té, café, mate, tereré e infusiones sin azúcar ni leche agregada. Endulzar únicamente con sucralosa, stevia pura o Splenda.
+            </p>
+          </div>
+        </div>
+
+        <div class="shopping-card">
+          <div class="rule-callout-danger">
+            <h3 style="color: #9f1239; font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem;">🔴 ALIMENTOS PROHIBIDOS Y SU RAZÓN CLÍNICA</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; line-height: 1.6; color: #9f1239;">
+              <li><strong>Banana, Mango y Uvas:</strong> Alto índice glucémico y fructosa libre concentrada. Disparan picos de insulina que frenan la lipólisis (quema de grasa).</li>
+              <li><strong>Aguacate / Palta:</strong> Densidad calórica excesiva (250-320 kcal de grasa). Dificulta mantener el déficit calórico.</li>
+              <li><strong>Papa, Batata, Mandioca y Remolacha:</strong> Almidones de absorción rápida al cocinarse. Menor poder saciante por caloría.</li>
+              <li><strong>Azúcar, Miel y Harinas Refinadas:</strong> Calorías vacías y rápida absorción que generan picos de apetito.</li>
+              <li><strong>Frituras y Mayonesas comunes:</strong> Exceso de grasas saturadas e inflamatorias.</li>
+              <li><strong>Jugos de Fruta:</strong> Elimina la fibra de la fruta y deja solo azúcares líquidos de asimilación ultra-rápida.</li>
+            </ul>
+          </div>
+
+          <div class="shopping-card" style="margin-top: 1rem;">
+            <h4 style="font-size: 0.92rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--accent);">🔄 Consultar Alimento en el Plan</h4>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.65rem;">
+              <input type="text" id="foodCheckInput" class="search-box" placeholder="Escribe un alimento (ej. banana, palta, pollo...)" onkeypress="if(event.key==='Enter') checkFood();">
+              <button class="btn btn-primary" onclick="checkFood()">Consultar</button>
+            </div>
+            <div id="foodCheckResult" style="font-size: 0.84rem; line-height: 1.5;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL RECETA DETALLADA -->
+  <div class="modal-overlay" id="recipeModal" onclick="if(event.target===this) closeModal()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <span id="modalSourceBadge" class="recipe-source-badge">Plan Oficial</span>
+          <h2 id="modalTitle" style="font-size: 1.2rem; font-weight: 800; color: var(--gray-900); margin-top: 0.25rem;">Nombre de la Receta</h2>
+          <div id="modalMeta" style="font-size: 0.8rem; color: var(--gray-600); margin-top: 0.25rem;"></div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <h4 style="font-weight: 700; color: var(--primary-dark);">🥗 Ingredientes (<span id="modalDinersLabel">1 porción</span>):</h4>
+          <span style="font-size: 0.75rem; background: var(--gray-100); padding: 2px 8px; border-radius: 4px; color: var(--gray-600);">Ajustado a los comensales elegidos</span>
+        </div>
+        <ul id="modalIngredients" style="padding-left: 1.25rem; margin-bottom: 1.25rem; font-size: 0.86rem; line-height: 1.6;"></ul>
+
+        <h4 style="font-weight: 700; margin-bottom: 0.5rem; color: var(--accent);">👩‍🍳 Instrucciones Paso a Paso:</h4>
+        <ol id="modalSteps" style="padding-left: 1.25rem; margin-bottom: 1.25rem; font-size: 0.86rem; line-height: 1.6;"></ol>
+
+        <div id="modalTip" style="background: var(--primary-light); border: 1px solid var(--primary-border); padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.82rem; color: var(--primary-dark);"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CREAR NUEVA RECETA -->
+  <div class="modal-overlay" id="createRecipeModal" onclick="if(event.target===this) closeCreateRecipeModal()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h2 style="font-size: 1.2rem; font-weight: 800; color: var(--gray-900);">➕ Crear Nueva Receta Personalizada</h2>
+          <p style="font-size: 0.8rem; color: var(--gray-600);">Se integrará a tu recetario, menú semanal y lista de compras.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeCreateRecipeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="newRecipeForm" onsubmit="saveCustomRecipe(event)">
+          <div class="form-group">
+            <label>Nombre de la Receta *</label>
+            <input type="text" id="newRecTitle" class="form-control" placeholder="Ej: Omelette de Claras con Champiñones" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div class="form-group">
+              <label>Momento del Día *</label>
+              <select id="newRecMoment" class="form-control" required>
+                <option value="desayuno">☕ Desayuno</option>
+                <option value="almuerzo">🥗 Almuerzo</option>
+                <option value="merienda">🥛 Merienda</option>
+                <option value="cena">🌙 Cena</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Categoría Principal</label>
+              <select id="newRecCategory" class="form-control">
+                <option value="pollo">Pollo</option>
+                <option value="pescado">Pescado / Atún</option>
+                <option value="carne">Carne Vacuna</option>
+                <option value="souffle">Soufflés / Huevos</option>
+                <option value="ensalada">Ensalada / Vegetariano</option>
+                <option value="desayuno">Desayuno / Merienda</option>
+                <option value="colacion">Colación</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div class="form-group">
+              <label>Tiempo Estimado</label>
+              <input type="text" id="newRecTime" class="form-control" placeholder="Ej: 15 min" value="15 min">
+            </div>
+            <div class="form-group">
+              <label>Calorías Aprox.</label>
+              <input type="text" id="newRecCalories" class="form-control" placeholder="Ej: 220 kcal" value="220 kcal">
+            </div>
+          </div>
+
+          <!-- LISTA DINÁMICA DE INGREDIENTES -->
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+              <label style="margin: 0;">Ingredientes (porción para 1 persona) *</label>
+              <button type="button" class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;" onclick="addIngredientRow()">+ Agregar Ingrediente</button>
+            </div>
+            <div id="newRecIngredientsList" style="display: flex; flex-direction: column; gap: 0.4rem;">
+              <!-- Dynamic rows -->
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Pasos de Preparación (uno por línea) *</label>
+            <textarea id="newRecSteps" class="form-control" rows="3" placeholder="1. Calentar la sartén con rocío vegetal...&#10;2. Cocinar los ingredientes 5 minutos..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Consejo Nutricional o Tip</label>
+            <input type="text" id="newRecTip" class="form-control" placeholder="Ej: Aporta fibra y proteína limpia.">
+          </div>
+
+          <div id="recipeFormWarning" style="display: none; margin-bottom: 1rem;"></div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.25rem;">
+            <button type="button" class="btn btn-secondary" onclick="closeCreateRecipeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar Receta</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div style="max-width: 1280px; margin: 0 auto;">
+      <p><strong>RECETAS DEL PLAN NUTRICIONAL</strong> • Sistema Personalizado para Sylvia</p>
+      <p style="margin-top: 0.35rem; font-size: 0.8rem; color: var(--gray-600);">
+        4 Comidas Diarias • Multiplicador de Porciones • PWA Instalable Offline • Octubre 2026
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // ==========================================
+    // BASE DE DATOS DE RECETAS (29 RECETAS INICIALES)
+    // ==========================================
+    const DEFAULT_RECIPES = [
+      // DESAYUNOS
+      {
+        id: "desayuno_huevos_fruta",
+        title: "Desayuno Clásico: 2 Huevos Revueltos con Fruta Permitida",
+        moment: ["desayuno"],
+        category: "desayuno",
+        time: "8 min",
+        protein: "2 huevos enteros (100g)",
+        calories: "220 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Huevos enteros", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
+          { name: "Fruta permitida (manzana o pera)", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Café o té sin azúcar ni leche", qty: 1, unit: "taza", category: "Condimentos y Aceites" },
+          { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Batir los 2 huevos enteros en un tazón con una pizca de sal y pimienta.",
+          "Calentar una sartén antiadherente con rocío vegetal a fuego medio.",
+          "Verter los huevos y remover constantemente con espátula de goma durante 2 minutos.",
+          "Lavar y cortar 1 manzana o pera permitida en gajos con cáscara.",
+          "Acompañar con infusión libre de café o té con edulcorante sin calorías."
+        ],
+        tip: "El pilar fundamental de los desayunos del plan: máxima saciedad matutina."
+      },
+      {
+        id: "desayuno_yogurt_avena_pera",
+        title: "Yogurt Descremado con Avena y Fruta de Estación",
+        moment: ["desayuno", "merienda"],
+        category: "desayuno",
+        time: "3 min",
+        protein: "Yogurt descremado (125g) + Avena (3 cdas)",
+        calories: "215 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Yogurt descremado de fruta o natural", qty: 125, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Avena Quaker en hojuelas", qty: 30, unit: "g", category: "Despensa y Cereales" },
+          { name: "Pera o Durazno en cubitos", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Canela en polvo", qty: 1, unit: "pizca", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Servir el pote de yogurt descremado en un bol mediano.",
+          "Incorporar las 3 cucharadas soperas de avena Quaker tradicional o instantánea.",
+          "Picar la pera o durazno en cubitos pequeños y agregarlos al bol.",
+          "Espolvorear con canela en polvo para potenciar el sabor sin añadir azúcar."
+        ],
+        tip: "Aporta carbohidratos complejos de absorción lenta y bacterias probióticas para la digestión."
+      },
+      {
+        id: "mugcake_avena_cacao",
+        title: "Mugcake Proteico de Avena y Cacao sin Azúcar",
+        moment: ["desayuno", "merienda"],
+        category: "desayuno",
+        time: "5 min",
+        protein: "1 huevo + Avena",
+        calories: "190 kcal",
+        source: "Nutri Maga",
+        ingredients: [
+          { name: "Huevo entero", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
+          { name: "Harina de avena o avena molida", qty: 30, unit: "g", category: "Despensa y Cereales" },
+          { name: "Cacao amargo 100% puro en polvo", qty: 5, unit: "g", category: "Despensa y Cereales" },
+          { name: "Leche descremada", qty: 30, unit: "ml", category: "Lácteos y Huevos" },
+          { name: "Edulcorante sucralosa o Splenda", qty: 1, unit: "al gusto", category: "Condimentos y Aceites" },
+          { name: "Polvo para hornear", qty: 2, unit: "g", category: "Despensa y Cereales" }
+        ],
+        steps: [
+          "En una taza grande apta para microondas, batir el huevo con el edulcorante y las 2 cucharadas de leche descremada.",
+          "Añadir la harina de avena, el cacao amargo 100% y el polvo de hornear.",
+          "Mezclar muy bien con un tenedor hasta que no queden grumos.",
+          "Cocinar en el microondas a máxima potencia durante 1 minuto y 30 segundos.",
+          "Dejar reposar 1 minuto y acompañar con café negro o infusión."
+        ],
+        tip: "Satisface el deseo de algo dulce y esponjoso cumpliendo 100% con los cereales y proteínas de la mañana."
+      },
+      {
+        id: "pancakes_avena_espinaca",
+        title: "Pancakes Fit de Avena, Claras y Espinaca",
+        moment: ["desayuno", "merienda"],
+        category: "desayuno",
+        time: "10 min",
+        protein: "Claras de huevo + Avena",
+        calories: "185 kcal",
+        source: "Investigación Web Fit",
+        ingredients: [
+          { name: "Avena tradicional o en hojuelas", qty: 35, unit: "g", category: "Despensa y Cereales" },
+          { name: "Huevos enteros (o 2 claras)", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
+          { name: "Espinacas frescas tiernas", qty: 40, unit: "g", category: "Verduras y Frutas" },
+          { name: "Pizca de sal y ajo en polvo", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
+          { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Licuar la avena, los huevos (o claras) y las espinacas frescas durante 45 segundos.",
+          "Calentar una sartén antiadherente rociada con rocío vegetal a fuego medio.",
+          "Verter porciones pequeñas formando 2 o 3 pancakes.",
+          "Cocinar 2 minutos hasta que salgan burbujas, voltear y cocinar 1 minuto más."
+        ],
+        tip: "Desayuno o merienda proteica salada para variar de los huevos duros habituales."
+      },
+
+      // MERIENDAS Y COLACIONES
+      {
+        id: "colacion_fruta_fresca",
+        title: "Fruta Fresca de Estación con Infusión",
+        moment: ["merienda"],
+        category: "colacion",
+        time: "2 min",
+        protein: "Fibra vegetal (100g)",
+        calories: "55 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Manzana, Pera, Durazno o Naranja fresca", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Té verde, mate o café sin azúcar", qty: 1, unit: "taza", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Lavar la fruta fresca permitida y consumirla entera con su piel limpia para máxima fibra.",
+          "Acompañar con infusión caliente o tereré libre sin azúcar ni leche."
+        ],
+        tip: "Corta el apetito a media mañana y aporta agua biológica y vitaminas."
+      },
+      {
+        id: "colacion_gelatina_diet_fruta",
+        title: "Gelatina Sin Azúcar con Cubitos de Manzana",
+        moment: ["merienda"],
+        category: "colacion",
+        time: "5 min",
+        protein: "Colágeno y fibra",
+        calories: "45 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Gelatina dietética sin azúcar", qty: 120, unit: "g", category: "Despensa y Cereales" },
+          { name: "Manzana verde en cubitos", qty: 50, unit: "g", category: "Verduras y Frutas" }
+        ],
+        steps: [
+          "Preparar la gelatina 0% según instrucciones del envase.",
+          "Agregar los cubitos de manzana verde antes de enfriar en la heladera.",
+          "Consumir bien fría."
+        ],
+        tip: "Opción libre indicada por el plan cuando hay ansiedad antes del almuerzo."
+      },
+      {
+        id: "colacion_huevo_duro_infusion",
+        title: "Huevo Duro de Reserva con Especias e Infusión",
+        moment: ["merienda"],
+        category: "colacion",
+        time: "1 min",
+        protein: "1 huevo entero (50g)",
+        calories: "75 kcal",
+        source: "Guía Rápida Meal Prep",
+        ingredients: [
+          { name: "Huevo entero duro", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
+          { name: "Pizca de orégano y sal", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
+          { name: "Café o té sin azúcar", qty: 1, unit: "taza", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Tomar uno de los huevos cocidos previamente en el meal prep semanal de la heladera.",
+          "Pelar, cortar por la mitad y espolvorear con orégano y pizca de sal.",
+          "Acompañar con infusión libre."
+        ],
+        tip: "Aporte proteico rápido que frena el hambre por completo."
+      },
+
+      // MERIENDAS
+      {
+        id: "merienda_yogurt_fibra",
+        title: "Yogurt Descremado con Cereales Fibra Max",
+        moment: ["merienda"],
+        category: "desayuno",
+        time: "2 min",
+        protein: "Yogurt descremado (125g)",
+        calories: "165 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Yogurt descremado de fruta o natural", qty: 125, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Cereales ricos en fibra sin azúcar (All Bran/Avena)", qty: 30, unit: "g", category: "Despensa y Cereales" }
+        ],
+        steps: [
+          "Verter el pote de yogurt descremado en una taza.",
+          "Añadir las 3 cucharadas soperas de cereales ricos en fibra sin azúcar.",
+          "Mezclar y consumir inmediatamente."
+        ],
+        tip: "La merienda oficial del plan para mantener la regularidad intestinal."
+      },
+      {
+        id: "merienda_manzana_asada_canela",
+        title: "Manzana Asada con Canela y Queso Blanco",
+        moment: ["merienda"],
+        category: "colacion",
+        time: "15 min",
+        protein: "Queso blanco descremado (35g)",
+        calories: "135 kcal",
+        source: "Investigación Web Fit",
+        ingredients: [
+          { name: "Manzana roja o verde", qty: 150, unit: "g", category: "Verduras y Frutas" },
+          { name: "Queso blanco descremado", qty: 35, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Canela en polvo", qty: 1, unit: "cdta", category: "Condimentos y Aceites" },
+          { name: "Edulcorante sucralosa", qty: 1, unit: "pizca", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Ahuecar el centro de la manzana retirando las semillas.",
+          "Espolvorear con canela y unas gotas de sucralosa.",
+          "Cocinar en microondas 3 minutos o al horno 15 minutos hasta que esté tierna.",
+          "Servir tibia con una cucharada de queso blanco descremado arriba."
+        ],
+        tip: "Postre o merienda tibia ideal para días fríos sin sumar azúcares."
+      },
+
+      // ALMUERZOS Y CENAS PRINCIPALES
+      {
+        id: "carne_asada_horno",
+        title: "Carne Asada al Horno con Cebolla y Tomate",
+        moment: ["almuerzo", "cena"],
+        category: "carne",
+        time: "40 min",
+        protein: "Bife magro (100g cocido)",
+        calories: "270 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Carne magra / Bife de lomo", qty: 100, unit: "g", category: "Carnes y Pescados" },
+          { name: "Cebolla", qty: 150, unit: "g", category: "Verduras y Frutas" },
+          { name: "Tomate fresco", qty: 150, unit: "g", category: "Verduras y Frutas" },
+          { name: "Diente de ajo", qty: 1, unit: "unidad", category: "Verduras y Frutas" },
+          { name: "Perejil fresco", qty: 10, unit: "g", category: "Verduras y Frutas" },
+          { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Limpiar la carne retirando grasa visible.",
+          "Rociar una fuente con Fritolín, disponer la carne sazonada con ajo, pimienta y perejil.",
+          "Cortar la cebolla y tomate en rodajas y colocarlos alrededor con 200 ml de agua.",
+          "Hornear a 180°C durante 35-40 minutos."
+        ],
+        tip: "La cocción con agua y rocío vegetal evita aceites pesados y mantiene la carne tierna."
+      },
+      {
+        id: "suprema_arrollada_acelga",
+        title: "Suprema de Pollo Arrollada con Acelga",
+        moment: ["almuerzo"],
+        category: "pollo",
+        time: "35 min",
+        protein: "Pechuga de pollo (125g)",
+        calories: "230 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Pechuga de pollo deshuesada", qty: 125, unit: "g", category: "Carnes y Pescados" },
+          { name: "Acelga fresca", qty: 50, unit: "g", category: "Verduras y Frutas" },
+          { name: "Queso blanco descremado", qty: 35, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Clara de huevo", qty: 30, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Nuez moscada y pimienta", qty: 1, unit: "pizca", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Aplanar el filete de pechuga fino.",
+          "Salpimentar y pincelar con clara de huevo.",
+          "Mezclar el queso blanco con nuez moscada y untar sobre las hojas de acelga blanqueadas.",
+          "Disponer el relleno sobre la pechuga y arrollar.",
+          "Envolver en papel de aluminio y cocinar al horno a baño María 30 minutos a 190°C."
+        ],
+        tip: "El papel aluminio conserva 100% los jugos sin añadir aceites."
+      },
+      {
+        id: "tomates_rellenos_palmito_jamon",
+        title: "Tomates Rellenos con Palmito y Jamón",
+        moment: ["cena"],
+        category: "cena_ligera",
+        time: "15 min",
+        protein: "Jamón cocido magro (25g)",
+        calories: "190 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Tomate redondo grande", qty: 150, unit: "g", category: "Verduras y Frutas" },
+          { name: "Jamón cocido magro", qty: 25, unit: "g", category: "Carnes y Pescados" },
+          { name: "Palmitos en conserva", qty: 50, unit: "g", category: "Despensa y Cereales" },
+          { name: "Zanahoria rallada", qty: 50, unit: "g", category: "Verduras y Frutas" },
+          { name: "Lechuga fresca", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Mayonesa light", qty: 15, unit: "g", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Ahuecar el tomate reservando la pulpa.",
+          "Picar el jamón y los palmitos.",
+          "Mezclar jamón, palmitos, zanahoria rallada, pulpa y 1 cda de mayonesa light.",
+          "Rellenar y servir sobre cama abundante de lechuga fresca."
+        ],
+        tip: "Cena fresca y saciante, ideal para días calurosos."
+      },
+      {
+        id: "souffle_choclo_diet",
+        title: "Soufflé de Choclo Dietético",
+        moment: ["cena", "almuerzo"],
+        category: "souffle",
+        time: "30 min",
+        protein: "Huevo + Queso blanco",
+        calories: "220 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Choclo en grano (1/2 lata)", qty: 100, unit: "g", category: "Despensa y Cereales" },
+          { name: "Huevo entero", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
+          { name: "Leche descremada", qty: 100, unit: "ml", category: "Lácteos y Huevos" },
+          { name: "Queso blanco descremado", qty: 35, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Maizena (almidón de maíz)", qty: 10, unit: "g", category: "Despensa y Cereales" },
+          { name: "Nuez moscada y pimienta", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
+          { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Disolver la maizena en la leche descremada fría y calentar hasta espesar.",
+          "Integrar choclo, salsa blanca, queso blanco, nuez moscada y la yema.",
+          "Batir la clara a punto de nieve e incorporar con movimientos envolventes.",
+          "Hornear en molde con Fritolín a 180°C durante 20-25 minutos."
+        ],
+        tip: "El secreto del volumen esponjoso sin calorías es batir la clara a nieve firme."
+      },
+      {
+        id: "pollo_plancha_limon",
+        title: "Pollo a la Plancha con Pimienta y Limón",
+        moment: ["almuerzo"],
+        category: "pollo",
+        time: "15 min",
+        protein: "Pechuga de pollo (200g)",
+        calories: "240 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Pechuga de pollo en filetes", qty: 200, unit: "g", category: "Carnes y Pescados" },
+          { name: "Limón fresco", qty: 1, unit: "unidad", category: "Verduras y Frutas" },
+          { name: "Aceite de oliva o girasol", qty: 5, unit: "ml", category: "Condimentos y Aceites" },
+          { name: "Pimienta negra molida", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
+          { name: "Ensalada mix (lechuga, tomate, pepino)", qty: 350, unit: "g", category: "Verduras y Frutas" }
+        ],
+        steps: [
+          "Condimentar los filetes con pimienta y abundante zumo de limón.",
+          "Cocinar en plancha caliente con rocío vegetal 4-5 minutos por lado.",
+          "Acompañar con ensalada fresca de lechuga, tomate y pepino con vinagre."
+        ],
+        tip: "Apenas cambie de color en el centro, retíralo para que no se reseque."
+      },
+      {
+        id: "zapallito_relleno_carne",
+        title: "Zapallito Relleno con Carne Magra",
+        moment: ["cena", "almuerzo"],
+        category: "carne",
+        time: "35 min",
+        protein: "Lomo picado magro (100g)",
+        calories: "280 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Zapallito verde redondo", qty: 150, unit: "g", category: "Verduras y Frutas" },
+          { name: "Carne lomo picada magra", qty: 100, unit: "g", category: "Carnes y Pescados" },
+          { name: "Papa hervida en cubos pequeños", qty: 50, unit: "g", category: "Verduras y Frutas" },
+          { name: "Cebolla de verdeo y locote", qty: 50, unit: "g", category: "Verduras y Frutas" },
+          { name: "Tomate en cubos", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Queso parmesano rallado", qty: 10, unit: "g", category: "Lácteos y Huevos" }
+        ],
+        steps: [
+          "Hervir el zapallito 8 min, cortar tapa y ahuecar reservando la pulpa.",
+          "Saltear carne magra con verdeo, locote, tomate, pulpa y los 50g de papa hervida.",
+          "Rellenar el zapallito, espolvorear parmesano y gratinar 8 minutos al horno."
+        ],
+        tip: "Único plato donde se admiten 50g de papa como aglutinante en el relleno."
+      },
+      {
+        id: "souffle_queso_diet",
+        title: "Soufflé de Queso Dietético",
+        moment: ["almuerzo", "cena"],
+        category: "souffle",
+        time: "35 min",
+        protein: "Clara de huevo + Queso blanco",
+        calories: "210 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Leche descremada", qty: 125, unit: "ml", category: "Lácteos y Huevos" },
+          { name: "Queso blanco descremado", qty: 35, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Clara de huevo", qty: 30, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Harina de trigo o maizena", qty: 10, unit: "g", category: "Despensa y Cereales" },
+          { name: "Aceite de oliva", qty: 3, unit: "ml", category: "Condimentos y Aceites" },
+          { name: "Nuez moscada y sal marina", qty: 1, unit: "pizca", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Espesar la leche descremada con la harina/maizena.",
+          "Sumar queso blanco, aceite de oliva y nuez moscada.",
+          "Batir clara a punto de nieve e incorporar con suavidad.",
+          "Hornear a baño María a 180°C durante 30 minutos."
+        ],
+        tip: "El baño María asegura un levado parejo y suave sin secarse."
+      },
+      {
+        id: "hamburguesa_pollo_casera",
+        title: "Hamburguesa de Pollo Casera con Ensalada",
+        moment: ["cena", "almuerzo"],
+        category: "pollo",
+        time: "20 min",
+        protein: "Pechuga de pollo picada (150g)",
+        calories: "260 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Pechuga de pollo picada", qty: 150, unit: "g", category: "Carnes y Pescados" },
+          { name: "Cebolla picada fina", qty: 30, unit: "g", category: "Verduras y Frutas" },
+          { name: "Perejil y ajo picados", qty: 10, unit: "g", category: "Verduras y Frutas" },
+          { name: "Ensalada mix (lechuga, tomate, pepino)", qty: 350, unit: "g", category: "Verduras y Frutas" },
+          { name: "Vinagre y rocío vegetal", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Mezclar la pechuga picada con cebolla, ajo, perejil y pimienta.",
+          "Formar el medallón y cocinar en plancha con Fritolín 5 min por lado.",
+          "Acompañar con abundante ensalada mix aderezada con vinagre."
+        ],
+        tip: "Pura proteína magra sin pan rallado ni aditivos industriales."
+      },
+      {
+        id: "pescado_plancha_vino",
+        title: "Pescado a la Plancha al Vino Blanco Gratinado",
+        moment: ["almuerzo", "cena"],
+        category: "pescado",
+        time: "20 min",
+        protein: "Filete de merluza/pescado blanco (200g)",
+        calories: "220 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Filete de pescado blanco (merluza)", qty: 200, unit: "g", category: "Carnes y Pescados" },
+          { name: "Queso blanco descremado", qty: 35, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Vino blanco seco", qty: 50, unit: "ml", category: "Despensa y Cereales" },
+          { name: "Aceite de oliva", qty: 5, unit: "ml", category: "Condimentos y Aceites" },
+          { name: "Pimienta negra molida", qty: 1, unit: "pizca", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Sellar el pescado en sartén con el aceite de oliva 2 min por lado.",
+          "Agregar vino blanco y reducir 3 minutos.",
+          "Disponer en fuente, cubrir con queso blanco descremado y gratinar 5 minutos al horno."
+        ],
+        tip: "El vino blanco aporta acidez y elegancia sin sumar azúcares."
+      },
+      {
+        id: "souffle_espinacas_diet",
+        title: "Soufflé de Espinacas Liviano",
+        moment: ["cena"],
+        category: "souffle",
+        time: "25 min",
+        protein: "Clara de huevo (30g)",
+        calories: "170 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Espinacas frescas", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Leche descremada", qty: 50, unit: "ml", category: "Lácteos y Huevos" },
+          { name: "Clara de huevo", qty: 30, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Maizena / Harina", qty: 10, unit: "g", category: "Despensa y Cereales" },
+          { name: "Nuez moscada y pimienta", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
+          { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Blanquear y escurrir espinacas, picar fino.",
+          "Ligar con salsa blanca ligera de leche descremada y maizena.",
+          "Batir clara a punto de nieve e incorporar envolvente.",
+          "Hornear en molde con Fritolín 20 min a 180°C."
+        ],
+        tip: "Gran volumen de saciedad, fibra soluble y hierro con mínimas calorías."
+      },
+      {
+        id: "omelette_souffle_queso",
+        title: "Omelette Soufflé con Queso Blanco",
+        moment: ["desayuno", "cena"],
+        category: "souffle",
+        time: "12 min",
+        protein: "Huevo entero (50g) + Queso blanco (35g)",
+        calories: "195 kcal",
+        source: "Plan Oficial Sylvia",
+        ingredients: [
+          { name: "Huevo entero", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
+          { name: "Queso blanco descremado", qty: 35, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Queso parmesano rallado", qty: 5, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" },
+          { name: "Orégano o ciboulette", qty: 1, unit: "pizca", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Batir yema con queso blanco y orégano.",
+          "Batir clara a punto de nieve e incorporar suavemente.",
+          "Cuajar en sartén con Fritolín a fuego lento tapado.",
+          "Espolvorear parmesano, doblar y servir."
+        ],
+        tip: "Textura soufflé esponjosa que sacia mucho más que una tortilla común."
+      },
+      {
+        id: "pechuga_marinada_yogurt",
+        title: "Pechuga Marinada al Yogurt y Hierbas",
+        moment: ["almuerzo", "cena"],
+        category: "pollo",
+        time: "25 min",
+        protein: "Pechuga de pollo (150g)",
+        calories: "235 kcal",
+        source: "Nutri Maga",
+        ingredients: [
+          { name: "Pechuga de pollo en filetes", qty: 150, unit: "g", category: "Carnes y Pescados" },
+          { name: "Yogurt natural descremado", qty: 60, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Zumo de limón fresco", qty: 15, unit: "ml", category: "Verduras y Frutas" },
+          { name: "Ajo en polvo y orégano", qty: 1, unit: "cdta", category: "Condimentos y Aceites" },
+          { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Marinar el pollo 20 min en yogurt, limón, ajo y orégano.",
+          "Calentar plancha con Fritolín y cocinar 4 min por lado.",
+          "Servir con ensalada fresca."
+        ],
+        tip: "El ácido láctico del yogurt ablanda la pechuga sin aportar grasas."
+      },
+      {
+        id: "nuggets_fit_pollo_zapallito_avena",
+        title: "Tortitas / Nuggets Fit de Pollo, Zapallito y Avena",
+        moment: ["almuerzo", "cena"],
+        category: "pollo",
+        time: "30 min",
+        protein: "Pechuga procesada (150g) + Huevo",
+        calories: "290 kcal",
+        source: "Nutri Maga",
+        ingredients: [
+          { name: "Pechuga de pollo picada o procesada", qty: 150, unit: "g", category: "Carnes y Pescados" },
+          { name: "Zapallito verde rallado", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Cebolla picada fina", qty: 50, unit: "g", category: "Verduras y Frutas" },
+          { name: "Huevo entero", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
+          { name: "Avena en hojuelas finas", qty: 30, unit: "g", category: "Despensa y Cereales" },
+          { name: "Pimienta y provenzal", qty: 1, unit: "cdta", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Exprimir el zapallito rallado retirando toda el agua.",
+          "Mezclar con el pollo, cebolla, huevo, avena y condimentos.",
+          "Formar medallones y hornear a 200°C por 20 minutos girando a mitad."
+        ],
+        tip: "Ideal para preparar el doble y congelar (Meal Prep)."
+      },
+      {
+        id: "wrap_proteico_huevo_queso",
+        title: "Base / Wrap Proteico de Huevo y Queso Blanco",
+        moment: ["cena"],
+        category: "cena_ligera",
+        time: "20 min",
+        protein: "2 huevos + Queso blanco + Atún (100g)",
+        calories: "295 kcal",
+        source: "Nutri Maga",
+        ingredients: [
+          { name: "Huevos enteros", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
+          { name: "Queso blanco descremado", qty: 35, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Atún al agua en lata", qty: 100, unit: "g", category: "Carnes y Pescados" },
+          { name: "Lechuga y tomate picados", qty: 150, unit: "g", category: "Verduras y Frutas" },
+          { name: "Orégano y sal", qty: 1, unit: "pizca", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Batir los huevos con el queso blanco y orégano.",
+          "Extender sobre papel manteca con Fritolín y hornear 12 min a 180°C.",
+          "Rellenar con atún al agua, lechuga y tomate, y enrollar."
+        ],
+        tip: "Sustituto limpio para tortillas de trigo comerciales."
+      },
+      {
+        id: "salteado_pollo_espinaca_tomate",
+        title: "Salteado Rápido de Pollo, Espinaca y Tomate",
+        moment: ["almuerzo", "cena"],
+        category: "pollo",
+        time: "15 min",
+        protein: "Pechuga de pollo (150g) + 1 huevo",
+        calories: "275 kcal",
+        source: "Nutri Maga",
+        ingredients: [
+          { name: "Pechuga de pollo en cubos", qty: 150, unit: "g", category: "Carnes y Pescados" },
+          { name: "Espinacas frescas", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Tomate perita en cubos", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Cebolla y ajo picados", qty: 50, unit: "g", category: "Verduras y Frutas" },
+          { name: "Huevo entero", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
+          { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Dorar el pollo con cebolla y ajo en sartén con Fritolín.",
+          "Añadir tomate y espinacas frescas.",
+          "Quebrar el huevo en el centro, revolver hasta integrar y servir caliente."
+        ],
+        tip: "Almuerzo exprés en menos de 10 minutos."
+      },
+      {
+        id: "merluza_papillote_zucchini",
+        title: "Merluza en Papillote con Zucchini y Limón",
+        moment: ["cena", "almuerzo"],
+        category: "pescado",
+        time: "20 min",
+        protein: "Filete de merluza fresca (200g)",
+        calories: "190 kcal",
+        source: "Investigación Web Fit",
+        ingredients: [
+          { name: "Filete de merluza", qty: 200, unit: "g", category: "Carnes y Pescados" },
+          { name: "Zapallito o Zucchini en juliana", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Zanahoria en juliana fina", qty: 50, unit: "g", category: "Verduras y Frutas" },
+          { name: "Limón en rodajas finas", qty: 1, unit: "unidad", category: "Verduras y Frutas" },
+          { name: "Orégano seco y pimienta", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
+          { name: "Aceite de oliva crudo", qty: 5, unit: "ml", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Disponer el colchón de verduras en papel de aluminio.",
+          "Colocar el filete de merluza encima sazonado con limón y orégano.",
+          "Cerrar herméticamente y hornear 15 min a 200°C."
+        ],
+        tip: "Cocción al vapor en sus propios jugos sin grasas añadidas."
+      },
+      {
+        id: "budin_souffle_zapallitos",
+        title: "Budín Soufflé de Zapallitos Verdes Light",
+        moment: ["cena"],
+        category: "souffle",
+        time: "35 min",
+        protein: "Huevos (2 unidades) + Queso blanco",
+        calories: "210 kcal",
+        source: "Investigación Web Fit",
+        ingredients: [
+          { name: "Zapallitos verdes medianos", qty: 300, unit: "g", category: "Verduras y Frutas" },
+          { name: "Huevos enteros", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
+          { name: "Queso blanco descremado", qty: 50, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Cebolla picada fina", qty: 50, unit: "g", category: "Verduras y Frutas" },
+          { name: "Nuez moscada y sal marina", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
+          { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Cocinar zapallitos al vapor y escurrirlos muy bien.",
+          "Mezclar con las yemas, cebolla rehogada, queso blanco y condimentos.",
+          "Incorporar claras batidas a nieve.",
+          "Hornear en budinera con Fritolín 25 minutos a 180°C."
+        ],
+        tip: "Muy bajo en calorías y carbohidratos, excelente saciedad."
+      },
+      {
+        id: "tortilla_expres_atun_espinaca",
+        title: "Tortilla Exprés de Atún y Espinaca",
+        moment: ["cena"],
+        category: "pescado",
+        time: "12 min",
+        protein: "Atún al agua (100g) + 2 huevos",
+        calories: "260 kcal",
+        source: "Investigación Web Fit",
+        ingredients: [
+          { name: "Atún al agua en lata", qty: 100, unit: "g", category: "Carnes y Pescados" },
+          { name: "Huevos enteros", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
+          { name: "Espinacas frescas picadas", qty: 80, unit: "g", category: "Verduras y Frutas" },
+          { name: "Avena en hojuelas", qty: 15, unit: "g", category: "Despensa y Cereales" },
+          { name: "Orégano y pimienta", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
+          { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Batir huevos con avena, atún bien escurrido y espinacas picadas.",
+          "Cocinar tapado en sartén rociada con Fritolín 3 min por lado.",
+          "Acompañar con tomates en rodajas."
+        ],
+        tip: "Cena rica en proteína lista en 10 minutos."
+      },
+      {
+        id: "ensalada_repollo_manzana_yogurt",
+        title: "Ensalada Crujiente de Repollo y Manzana con Aderezo de Yogurt",
+        moment: ["almuerzo", "cena"],
+        category: "ensalada",
+        time: "10 min",
+        protein: "Yogurt descremado (aderezo)",
+        calories: "130 kcal",
+        source: "Investigación Web Fit",
+        ingredients: [
+          { name: "Repollo blanco o morado en tiras finas", qty: 150, unit: "g", category: "Verduras y Frutas" },
+          { name: "Zanahoria rallada", qty: 50, unit: "g", category: "Verduras y Frutas" },
+          { name: "Manzana verde en cubos con cáscara", qty: 75, unit: "g", category: "Verduras y Frutas" },
+          { name: "Yogurt natural descremado", qty: 50, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Vinagre de manzana o limón", qty: 10, unit: "ml", category: "Condimentos y Aceites" },
+          { name: "Sal y pimienta", qty: 1, unit: "pizca", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Cortar repollo fino, rallar zanahoria y cubetear manzana con cáscara.",
+          "Mezclar el yogurt con vinagre de manzana, sal y pimienta.",
+          "Verter sobre los vegetales y mezclar."
+        ],
+        tip: "Ahorra más de 200 kcal de grasa comparado con mayonesas tradicionales."
+      },
+      {
+        id: "ceviche_champinones_pepino",
+        title: "Ceviche Ligero de Champiñones y Pepino",
+        moment: ["almuerzo", "cena"],
+        category: "ensalada",
+        time: "15 min",
+        protein: "Champiñones frescos (150g)",
+        calories: "95 kcal",
+        source: "Cocina Saludable Chile",
+        ingredients: [
+          { name: "Champiñones frescos limpios", qty: 150, unit: "g", category: "Verduras y Frutas" },
+          { name: "Pepino cortado en cubitos", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Tomate perita en dados", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Cebolla morada en pluma fina", qty: 40, unit: "g", category: "Verduras y Frutas" },
+          { name: "Zumo de limón fresco", qty: 40, unit: "ml", category: "Verduras y Frutas" },
+          { name: "Cilantro o perejil fresco picado", qty: 10, unit: "g", category: "Verduras y Frutas" }
+        ],
+        steps: [
+          "Filetear champiñones y macerar 10 min en zumo de limón fresco.",
+          "Incorporar pepino en dados, tomate, cebolla morada y cilantro.",
+          "Salpimentar y servir bien frío."
+        ],
+        tip: "Textura refrescante similar al ceviche marino con cero grasa."
+      },
+      {
+        id: "wok_pollo_acelga_locote",
+        title: "Wok de Pollo con Acelga, Locote y Cebolla",
+        moment: ["almuerzo"],
+        category: "pollo",
+        time: "15 min",
+        protein: "Pechuga de pollo (150g)",
+        calories: "245 kcal",
+        source: "Cocina Saludable Chile",
+        ingredients: [
+          { name: "Pechuga de pollo en tiras", qty: 150, unit: "g", category: "Carnes y Pescados" },
+          { name: "Acelga fresca en juliana", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Locote / Pimiento rojo y verde", qty: 60, unit: "g", category: "Verduras y Frutas" },
+          { name: "Cebolla en tiras", qty: 50, unit: "g", category: "Verduras y Frutas" },
+          { name: "Salsa de soja light o limón", qty: 5, unit: "ml", category: "Condimentos y Aceites" },
+          { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
+        ],
+        steps: [
+          "Dorar las tiras de pollo a fuego vivo en wok con Fritolín.",
+          "Añadir cebolla y locote, salteando 3 minutos.",
+          "Incorporar acelga y salsa de soja light 2 minutos al dente."
+        ],
+        tip: "Cocción al dente al wok conserva vitaminas y fibra crujiente."
+      }
+    ];
+
+    // ==========================================
+    // LISTA DE INGREDIENTES PARA DESPENSA
+    // ==========================================
+    const PANTRY_ITEMS = [
+      "Pechuga de pollo",
+      "Carne magra / Bife de lomo",
+      "Filete de merluza",
+      "Atún al agua en lata",
+      "Jamón cocido magro",
+      "Huevos enteros",
+      "Claras de huevo",
+      "Queso blanco descremado",
+      "Leche descremada",
+      "Yogurt natural descremado",
+      "Queso parmesano rallado",
+      "Zapallito verde redondo",
+      "Espinacas frescas",
+      "Acelga fresca",
+      "Tomate fresco",
+      "Lechuga fresca",
+      "Pepino",
+      "Zanahoria",
+      "Cebolla",
+      "Champiñones frescos",
+      "Choclo en grano (lata)",
+      "Palmitos en conserva",
+      "Manzana verde / roja",
+      "Pera de agua",
+      "Durazno fresco",
+      "Limón fresco",
+      "Avena Quaker",
+      "Harina de trigo / Maizena",
+      "Cacao amargo 100%",
+      "Gelatina sin azúcar",
+      "Rocío vegetal Fritolín",
+      "Aceite de oliva",
+      "Vinagre de manzana",
+      "Mayonesa light",
+      "Edulcorante (Splenda/Sucralosa)"
+    ];
+
+    // ==========================================
+    // ESTADO DE LA APLICACIÓN
+    // ==========================================
+    const DAYS = [
+      { id: "lun", name: "Lunes", dateNum: 1 },
+      { id: "mar", name: "Martes", dateNum: 2 },
+      { id: "mie", name: "Miércoles", dateNum: 3 },
+      { id: "jue", name: "Jueves", dateNum: 4 },
+      { id: "vie", name: "Viernes", dateNum: 5 },
+      { id: "sab", name: "Sábado", dateNum: 6 },
+      { id: "dom", name: "Domingo", dateNum: 7 }
+    ];
+
+    let RECIPES = [];
+    let currentWeeklyPlan = {};
+    let currentPantry = new Set();
+    let checkedShoppingItems = new Set();
+    let currentDiners = 1; // 1, 2, 3 o 4 personas
+
+    function initApp() {
+      // 1. Cargar recetas (Default + Custom)
+      const savedCustom = localStorage.getItem("plan_sylvia_custom_recipes");
+      let customRecipes = [];
+      if (savedCustom) {
+        try { customRecipes = JSON.parse(savedCustom); } catch (e) { customRecipes = []; }
+      }
+      RECIPES = [...DEFAULT_RECIPES, ...customRecipes];
+      document.getElementById("totalRecipesBadge").innerText = RECIPES.length;
+
+      // 2. Cargar Comensales
+      const savedDiners = localStorage.getItem("plan_sylvia_diners");
+      if (savedDiners) {
+        currentDiners = parseInt(savedDiners) || 1;
+        document.getElementById("dinersSelect").value = currentDiners;
+      }
+      updateDinersLabels();
+
+      // 3. Cargar Plan Semanal
+      const savedPlan = localStorage.getItem("plan_sylvia_menu_4meals");
+      if (savedPlan) {
+        try { currentWeeklyPlan = JSON.parse(savedPlan); } catch (e) { currentWeeklyPlan = {}; }
+      } else {
+        loadOfficialPlan(false);
+      }
+
+      // 4. Cargar Despensa
+      const savedPantry = localStorage.getItem("plan_sylvia_pantry");
+      if (savedPantry) {
+        try {
+          const arr = JSON.parse(savedPantry);
+          currentPantry = new Set(arr);
+        } catch (e) { currentPantry = new Set(); }
+      } else {
+        currentPantry = new Set(["Pechuga de pollo", "Huevos enteros", "Tomate fresco", "Lechuga fresca", "Cebolla", "Zapallito verde redondo", "Avena Quaker", "Rocío vegetal Fritolín", "Limón fresco", "Queso blanco descremado", "Manzana verde / roja"]);
+      }
+
+      // 5. Cargar Checkbox de Compras
+      const savedChecked = localStorage.getItem("plan_sylvia_checked_shopping");
+      if (savedChecked) {
+        try {
+          checkedShoppingItems = new Set(JSON.parse(savedChecked));
+        } catch (e) { checkedShoppingItems = new Set(); }
+      }
+
+      // 6. Registrar Service Worker para PWA
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration error:', err));
+      }
+
+      renderPlanner();
+      renderPantryChecklist();
+      renderCatalog(RECIPES);
+      updateShoppingList();
+      updatePantrySuggestions();
+      setupNewRecipeIngredientRow();
+    }
+
+    function saveState() {
+      localStorage.setItem("plan_sylvia_menu_4meals", JSON.stringify(currentWeeklyPlan));
+      localStorage.setItem("plan_sylvia_pantry", JSON.stringify(Array.from(currentPantry)));
+      localStorage.setItem("plan_sylvia_checked_shopping", JSON.stringify(Array.from(checkedShoppingItems)));
+      localStorage.setItem("plan_sylvia_diners", currentDiners);
+    }
+
+    // ==========================================
+    // MULTIPLICADOR DE PORCIONES / COMENSALES
+    // ==========================================
+    function changeDiners(val) {
+      currentDiners = parseInt(val) || 1;
+      saveState();
+      updateDinersLabels();
+      updateShoppingList();
+    }
+
+    function updateDinersLabels() {
+      const lbl = currentDiners === 1 ? "1 persona (Sylvia)" : `${currentDiners} personas`;
+      const shoppingLbl = document.getElementById("shoppingDinersLabel");
+      const summaryLbl = document.getElementById("summaryDinersCount");
+      if (shoppingLbl) shoppingLbl.innerText = lbl;
+      if (summaryLbl) summaryLbl.innerText = `x${currentDiners} (${lbl})`;
+    }
+
+    // ==========================================
+    // NAVEGACIÓN ENTRE PESTAÑAS
+    // ==========================================
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll(".nav-btn").forEach(el => el.classList.remove("active"));
+
+      const target = document.getElementById("tab-" + tabId);
+      if (target) target.classList.add("active");
+
+      const btns = document.querySelectorAll(".nav-btn");
+      btns.forEach(btn => {
+        if (btn.getAttribute("onclick").includes(tabId)) {
+          btn.classList.add("active");
+        }
+      });
+
+      if (tabId === "shopping") updateShoppingList();
+      if (tabId === "pantry") updatePantrySuggestions();
+    }
+
+    // ==========================================
+    // RENDER DEL PLANIFICADOR SEMANAL (5 COMIDAS)
+    // ==========================================
+    function renderPlanner() {
+      const container = document.getElementById("daysGrid");
+      container.innerHTML = "";
+
+      const mealConfigs = [
+        { key: "desayuno", label: "☕ Desayuno", css: "desayuno" },
+        { key: "almuerzo", label: "🥗 Almuerzo Principal", css: "almuerzo" },
+        { key: "merienda", label: "🥛 Merienda", css: "merienda" },
+        { key: "cena", label: "🌙 Cena Ligera", css: "cena" }
+      ];
+
+      DAYS.forEach(day => {
+        const dayCard = document.createElement("div");
+        dayCard.className = "day-card";
+
+        const dayMenu = currentWeeklyPlan[day.id] || { desayuno: "", almuerzo: "", merienda: "", cena: "" };
+
+        let mealsHtml = "";
+        mealConfigs.forEach(m => {
+          const recId = dayMenu[m.key] || "";
+          mealsHtml += `
+            <div class="meal-block">
+              <div class="meal-label ${m.css}">
+                <span>${m.label}</span>
+                ${recId ? `<button class="meal-info-btn" onclick="openModal('${recId}')">ℹ️ Ver receta</button>` : ''}
+              </div>
+              <select class="recipe-select" onchange="setDayMeal('${day.id}', '${m.key}', this.value)">
+                <option value="">-- Seleccionar opción --</option>
+                ${getOptionsForMoment(m.key, recId)}
+              </select>
+            </div>
+          `;
+        });
+
+        dayCard.innerHTML = `
+          <div class="day-header">
+            <div class="day-title">
+              <span>📅 ${day.name}</span>
+            </div>
+            <span class="day-badge">Día ${day.dateNum}</span>
+          </div>
+          <div class="meals-container">
+            ${mealsHtml}
+          </div>
+        `;
+        container.appendChild(dayCard);
+      });
+    }
+
+    function getOptionsForMoment(moment, selectedId) {
+      return RECIPES
+        .filter(r => r.moment.includes(moment))
+        .map(r => `<option value="${r.id}" ${r.id === selectedId ? 'selected' : ''}>${r.title}</option>`)
+        .join('');
+    }
+
+    function setDayMeal(dayId, mealType, recipeId) {
+      if (!currentWeeklyPlan[dayId]) {
+        currentWeeklyPlan[dayId] = { desayuno: "", almuerzo: "", merienda: "", cena: "" };
+      }
+      currentWeeklyPlan[dayId][mealType] = recipeId;
+      saveState();
+      renderPlanner();
+      updateShoppingList();
+    }
+
+    // CARGAR PLAN OFICIAL SYLVIA (5 DÍAS + FIN DE SEMANA)
+    function loadOfficialPlan(shouldAlert = true) {
+      currentWeeklyPlan = {
+        lun: { desayuno: "desayuno_huevos_fruta", almuerzo: "carne_asada_horno", merienda: "merienda_yogurt_fibra", cena: "tortilla_expres_atun_espinaca" },
+        mar: { desayuno: "desayuno_huevos_fruta", almuerzo: "suprema_arrollada_acelga", merienda: "merienda_yogurt_fibra", cena: "tomates_rellenos_palmito_jamon" },
+        mie: { desayuno: "desayuno_huevos_fruta", almuerzo: "carne_asada_horno", merienda: "colacion_gelatina_diet_fruta", cena: "souffle_choclo_diet" },
+        jue: { desayuno: "desayuno_huevos_fruta", almuerzo: "pollo_plancha_limon", merienda: "merienda_yogurt_fibra", cena: "zapallito_relleno_carne" },
+        vie: { desayuno: "desayuno_huevos_fruta", almuerzo: "souffle_queso_diet", merienda: "merienda_yogurt_fibra", cena: "hamburguesa_pollo_casera" },
+        sab: { desayuno: "mugcake_avena_cacao", almuerzo: "pescado_plancha_vino", merienda: "merienda_manzana_asada_canela", cena: "wrap_proteico_huevo_queso" },
+        dom: { desayuno: "pancakes_avena_espinaca", almuerzo: "pechuga_marinada_yogurt", merienda: "desayuno_yogurt_avena_pera", cena: "merluza_papillote_zucchini" }
+      };
+      saveState();
+      renderPlanner();
+      updateShoppingList();
+      if (shouldAlert) alert("¡Plan Oficial de Sylvia (4 comidas diarias) cargado con éxito para los 7 días!");
+    }
+
+    function generateRandomPlan() {
+      const getRand = (moment) => {
+        const pool = RECIPES.filter(r => r.moment.includes(moment));
+        return pool[Math.floor(Math.random() * pool.length)].id;
+      };
+
+      DAYS.forEach(day => {
+        currentWeeklyPlan[day.id] = {
+          desayuno: getRand('desayuno'),
+          almuerzo: getRand('almuerzo'),
+          merienda: getRand('merienda'),
+          cena: getRand('cena')
+        };
+      });
+      saveState();
+      renderPlanner();
+      updateShoppingList();
+      alert("¡Nuevo menú variado generado para toda la semana!");
+    }
+
+    function clearPlan() {
+      if (confirm("¿Deseas reiniciar la planificación semanal completa?")) {
+        currentWeeklyPlan = {};
+        saveState();
+        renderPlanner();
+        updateShoppingList();
+      }
+    }
+
+    // ==========================================
+    // LISTA DE COMPRAS DINÁMICA (CON MULTIPLICADOR)
+    // ==========================================
+    function updateShoppingList() {
+      const container = document.getElementById("shoppingCategories");
+      if (!container) return;
+
+      const aggregated = {};
+      let totalMeals = 0;
+
+      DAYS.forEach(day => {
+        const dayPlan = currentWeeklyPlan[day.id];
+        if (!dayPlan) return;
+
+        ['desayuno', 'almuerzo', 'merienda', 'cena'].forEach(meal => {
+          const recId = dayPlan[meal];
+          if (!recId) return;
+
+          const rec = RECIPES.find(r => r.id === recId);
+          if (!rec) return;
+
+          totalMeals++;
+          rec.ingredients.forEach(ing => {
+            const cat = ing.category || "Varios";
+            if (!aggregated[cat]) aggregated[cat] = {};
+
+            const key = ing.name.trim();
+            if (!aggregated[cat][key]) {
+              aggregated[cat][key] = { qty: 0, unit: ing.unit };
+            }
+            // Multiplicar por la cantidad de comensales seleccionados
+            aggregated[cat][key].qty += (ing.qty * currentDiners);
+          });
+        });
+      });
+
+      document.getElementById("totalMealsCount").innerText = totalMeals;
+
+      if (totalMeals === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 2.5rem; color: var(--gray-600);">
+            <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">🧺 Tu menú semanal está vacío.</p>
+            <p style="font-size: 0.85rem;">Ve a la pestaña <strong>Menú Semanal</strong> y selecciona tus platos o pulsa "Cargar Plan Oficial".</p>
+          </div>
+        `;
+        document.getElementById("uniqueIngredientsCount").innerText = "0";
+        return;
+      }
+
+      let uniqueCount = 0;
+      let html = "";
+
+      const categoryIcons = {
+        "Carnes y Pescados": "🥩",
+        "Lácteos y Huevos": "🥚",
+        "Verduras y Frutas": "🥦",
+        "Despensa y Cereales": "🌾",
+        "Condimentos y Aceites": "🧂"
+      };
+
+      for (const [cat, items] of Object.entries(aggregated)) {
+        html += `
+          <div class="category-group">
+            <div class="category-title">
+              <span>${categoryIcons[cat] || "📦"} ${cat}</span>
+            </div>
+            <ul class="ingredient-list">
+        `;
+
+        for (const [name, data] of Object.entries(items)) {
+          uniqueCount++;
+          const isChecked = checkedShoppingItems.has(name);
+          const hasInPantry = Array.from(currentPantry).some(p => name.toLowerCase().includes(p.toLowerCase()) || p.toLowerCase().includes(name.toLowerCase()));
+
+          html += `
+            <li class="ingredient-item ${isChecked ? 'checked' : ''}">
+              <div class="ingredient-left">
+                <input type="checkbox" class="ingredient-checkbox" ${isChecked ? 'checked' : ''} onchange="toggleShoppingItem('${name.replace(/'/g, "\\'")}', this.checked)">
+                <span>${name}</span>
+                ${hasInPantry ? `<span style="font-size: 0.7rem; background: #e0f2fe; color: #0369a1; padding: 1px 6px; border-radius: 4px; font-weight: 600;">En tu despensa</span>` : ''}
+              </div>
+              <span class="ingredient-qty">${data.qty} ${data.unit}</span>
+            </li>
+          `;
+        }
+
+        html += `</ul></div>`;
+      }
+
+      container.innerHTML = html;
+      document.getElementById("uniqueIngredientsCount").innerText = uniqueCount;
+    }
+
+    function toggleShoppingItem(name, checked) {
+      if (checked) {
+        checkedShoppingItems.add(name);
+      } else {
+        checkedShoppingItems.delete(name);
+      }
+      saveState();
+      updateShoppingList();
+    }
+
+    function copyShoppingList() {
+      const text = generateShoppingListText();
+      if (!text) {
+        alert("La lista de compras está vacía.");
+        return;
+      }
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert("¡Lista de compras copiada al portapapeles!");
+      }).catch(err => {
+        alert("No se pudo copiar automáticamente. Puedes compartirla por WhatsApp o imprimir.");
+      });
+    }
+
+    function printShoppingList() {
+      window.print();
+    }
+
+    // EXPORTACIÓN A WHATSAPP
+    function generateShoppingListText() {
+      const categories = document.querySelectorAll(".category-group");
+      if (categories.length === 0) return null;
+
+      let text = `🛒 *LISTA DE COMPRAS - PLAN NUTRICIONAL SYLVIA*\n`;
+      text += `👥 Para: ${currentDiners === 1 ? '1 persona' : currentDiners + ' personas'}\n`;
+      text += `📅 Semana completa (4 comidas diarias)\n`;
+      text += `===================================\n\n`;
+
+      categories.forEach(cat => {
+        const title = cat.querySelector(".category-title").innerText;
+        text += `*${title}*\n`;
+        const items = cat.querySelectorAll(".ingredient-item");
+        items.forEach(it => {
+          const isChecked = it.classList.contains("checked") ? "✅" : "▫️";
+          const name = it.querySelector(".ingredient-left span").innerText;
+          const qty = it.querySelector(".ingredient-qty").innerText;
+          text += `  ${isChecked} ${name}: ${qty}\n`;
+        });
+        text += "\n";
+      });
+
+      text += `💡 *Recordatorios:* Cero azúcar, atún al agua, lácteos 0% descremados y Fritolín.\n`;
+      return text;
+    }
+
+    function shareShoppingListWhatsApp() {
+      const text = generateShoppingListText();
+      if (!text) {
+        alert("La lista de compras está vacía. Carga tu menú primero.");
+        return;
+      }
+      const encoded = encodeURIComponent(text);
+      window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+    }
+
+    function shareWeeklyMenuWhatsApp() {
+      let text = `📅 *MENÚ SEMANAL PLANIFICADO (4 COMIDAS)*\n`;
+      text += `Plan Nutricional Sylvia • ${currentDiners === 1 ? '1 persona' : currentDiners + ' comensales'}\n`;
+      text += `=====================================\n\n`;
+
+      DAYS.forEach(day => {
+        const p = currentWeeklyPlan[day.id];
+        text += `*${day.name.toUpperCase()} (Día ${day.dateNum})*\n`;
+        if (p) {
+          const des = RECIPES.find(r => r.id === p.desayuno)?.title || "No asignado";
+          const alm = RECIPES.find(r => r.id === p.almuerzo)?.title || "No asignado";
+          const mer = RECIPES.find(r => r.id === p.merienda)?.title || "No asignado";
+          const cen = RECIPES.find(r => r.id === p.cena)?.title || "No asignado";
+
+          text += `  ☕ Des: ${des}\n`;
+          text += `  🥗 Alm: ${alm}\n`;
+          text += `  🥛 Mer: ${mer}\n`;
+          text += `  🌙 Cen: ${cen}\n\n`;
+        } else {
+          text += `  (Sin comidas programadas)\n\n`;
+        }
+      });
+
+      text += `💧 Mínimo 2 litros de agua diarios • Cero azúcar • Mucha fibra.`;
+      const encoded = encodeURIComponent(text);
+      window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+    }
+
+    function exportWeeklyMenuPDF() {
+      window.print();
+    }
+
+    // ==========================================
+    // MI DESPENSA & REEMPLAZOS
+    // ==========================================
+    function renderPantryChecklist() {
+      const container = document.getElementById("pantryChecklist");
+      if (!container) return;
+
+      container.innerHTML = PANTRY_ITEMS.map(item => {
+        const isSelected = currentPantry.has(item);
+        return `
+          <div class="pantry-chip ${isSelected ? 'selected' : ''}" onclick="togglePantryItem('${item.replace(/'/g, "\\'")}', this)">
+            <span>${isSelected ? '✅' : '⚪'}</span>
+            <span>${item}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function togglePantryItem(item, el) {
+      if (currentPantry.has(item)) {
+        currentPantry.delete(item);
+      } else {
+        currentPantry.add(item);
+      }
+      saveState();
+      renderPantryChecklist();
+      updatePantrySuggestions();
+      updateShoppingList();
+    }
+
+    function selectAllPantry(selectAll) {
+      if (selectAll) {
+        PANTRY_ITEMS.forEach(it => currentPantry.add(it));
+      } else {
+        currentPantry.clear();
+      }
+      saveState();
+      renderPantryChecklist();
+      updatePantrySuggestions();
+      updateShoppingList();
+    }
+
+    function updatePantrySuggestions() {
+      const adviceContainer = document.getElementById("pantryReplacementsAdvice");
+      const matchesContainer = document.getElementById("pantryRecipeMatches");
+      if (!adviceContainer || !matchesContainer) return;
+
+      let adviceHtml = `<ul style="font-size: 0.84rem; line-height: 1.5; padding-left: 1.1rem; color: var(--gray-700);">`;
+      const hasChicken = Array.from(currentPantry).some(i => i.toLowerCase().includes("pollo"));
+      const hasBeef = Array.from(currentPantry).some(i => i.toLowerCase().includes("carne") || i.toLowerCase().includes("lomo"));
+      const hasFish = Array.from(currentPantry).some(i => i.toLowerCase().includes("merluza") || i.toLowerCase().includes("atún") || i.toLowerCase().includes("pescado"));
+      const hasZucchini = Array.from(currentPantry).some(i => i.toLowerCase().includes("zapallito"));
+      const hasSpinach = Array.from(currentPantry).some(i => i.toLowerCase().includes("espinaca") || i.toLowerCase().includes("acelga"));
+
+      if (!hasChicken && hasFish) {
+        adviceHtml += `<li>🔄 <strong>No tienes pechuga:</strong> Puedes usar <strong>100g de atún al agua o 200g de merluza</strong> como reemplazo proteico exacto sin alterar calorías.</li>`;
+      }
+      if (!hasChicken && hasBeef) {
+        adviceHtml += `<li>🔄 <strong>No tienes pollo:</strong> Usa <strong>80g a 100g de bife de lomo magro</strong> bien desgrasado.</li>`;
+      }
+      if (!hasZucchini && hasSpinach) {
+        adviceHtml += `<li>🔄 <strong>No tienes zapallito:</strong> Sustituye 1:1 por <strong>acelga o espinacas hervidas y escurridas</strong> en soufflés o salteados.</li>`;
+      }
+      if (hasZucchini && !hasSpinach) {
+        adviceHtml += `<li>🔄 <strong>Tienes zapallitos pero no espinaca:</strong> Ralla el zapallito verde bien escurrido para tortillas o soufflés.</li>`;
+      }
+      adviceHtml += `<li>⚖️ <strong>Regla de Frutas:</strong> Manzana, pera, durazno, naranja y ciruela fresca son 100% intercambiables entre sí (100g - 150g).</li>`;
+      adviceHtml += `</ul>`;
+      adviceContainer.innerHTML = adviceHtml;
+
+      const scoredRecipes = RECIPES.map(recipe => {
+        let matchedCount = 0;
+        let missingIngredients = [];
+
+        recipe.ingredients.forEach(ing => {
+          const found = Array.from(currentPantry).some(p => {
+            const pNorm = p.toLowerCase();
+            const ingNorm = ing.name.toLowerCase();
+            return ingNorm.includes(pNorm) || pNorm.includes(ingNorm) ||
+                   (ingNorm.includes("pollo") && pNorm.includes("pollo")) ||
+                   (ingNorm.includes("huevo") && pNorm.includes("huevo")) ||
+                   (ingNorm.includes("tomate") && pNorm.includes("tomate")) ||
+                   (ingNorm.includes("zapallito") && pNorm.includes("zapallito")) ||
+                   (ingNorm.includes("avena") && pNorm.includes("avena"));
+          });
+
+          if (found) {
+            matchedCount++;
+          } else {
+            missingIngredients.push(ing.name);
+          }
+        });
+
+        const percent = Math.round((matchedCount / recipe.ingredients.length) * 100);
+        return { recipe, percent, missingIngredients };
+      });
+
+      scoredRecipes.sort((a, b) => b.percent - a.percent);
+
+      let matchesHtml = "";
+      scoredRecipes.slice(0, 6).forEach(item => {
+        const isFull = item.percent >= 80;
+        matchesHtml += `
+          <div class="suggestion-card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.35rem;">
+              <h4 style="font-size: 0.92rem; font-weight: 700; color: var(--gray-900);">${item.recipe.title}</h4>
+              <span class="badge-match ${isFull ? 'full' : 'almost'}">${isFull ? '¡Listo para cocinar!' : item.percent + '% disponible'}</span>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--gray-600); margin-bottom: 0.35rem;">Momento: ${item.recipe.moment.join(', ')} • ${item.recipe.time}</p>
+            ${item.missingIngredients.length > 0 ? `<p style="font-size: 0.75rem; color: #b45309;">Te falta: ${item.missingIngredients.slice(0, 2).join(', ')}</p>` : `<p style="font-size: 0.75rem; color: #15803d; font-weight: 600;">Tienes todos los ingredientes principales</p>`}
+            <button class="meal-info-btn" style="margin-top: 0.35rem;" onclick="openModal('${item.recipe.id}')">Ver preparación paso a paso →</button>
+          </div>
+        `;
+      });
+
+      matchesContainer.innerHTML = matchesHtml;
+    }
+
+    // ==========================================
+    // CATÁLOGO DE RECETAS Y FILTROS
+    // ==========================================
+    let currentFilter = 'all';
+
+    function setFilter(filterType, btnEl) {
+      currentFilter = filterType;
+      document.querySelectorAll(".filter-chip").forEach(el => el.classList.remove("active"));
+      if (btnEl) btnEl.classList.add("active");
+      filterRecipes();
+    }
+
+    function filterRecipes() {
+      const query = (document.getElementById("recipeSearch").value || "").toLowerCase().trim();
+      const filtered = RECIPES.filter(recipe => {
+        let matchesFilter = true;
+        if (currentFilter === 'desayuno') matchesFilter = recipe.moment.includes('desayuno');
+        else if (currentFilter === 'almuerzo') matchesFilter = recipe.moment.includes('almuerzo');
+        else if (currentFilter === 'merienda') matchesFilter = recipe.moment.includes('merienda');
+        else if (currentFilter === 'cena') matchesFilter = recipe.moment.includes('cena');
+        else if (currentFilter === 'pollo') matchesFilter = recipe.category === 'pollo';
+        else if (currentFilter === 'pescado') matchesFilter = recipe.category === 'pescado';
+        else if (currentFilter === 'carne') matchesFilter = recipe.category === 'carne';
+        else if (currentFilter === 'souffle') matchesFilter = recipe.category === 'souffle';
+        else if (currentFilter === 'custom') matchesFilter = recipe.source.includes('Personalizada');
+
+        let matchesQuery = true;
+        if (query) {
+          const inTitle = recipe.title.toLowerCase().includes(query);
+          const inIngs = recipe.ingredients.some(i => i.name.toLowerCase().includes(query));
+          const inProtein = (recipe.protein || "").toLowerCase().includes(query);
+          matchesQuery = inTitle || inIngs || inProtein;
+        }
+
+        return matchesFilter && matchesQuery;
+      });
+
+      renderCatalog(filtered);
+    }
+
+    function renderCatalog(recipesList) {
+      const container = document.getElementById("recipesCatalogGrid");
+      if (!container) return;
+
+      if (recipesList.length === 0) {
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--gray-600);">No se encontraron recetas con ese criterio.</div>`;
+        return;
+      }
+
+      container.innerHTML = recipesList.map(recipe => {
+        const ingredientsSample = recipe.ingredients.slice(0, 3).map(i => `${i.name}`).join(', ') + '...';
+        const isCustom = recipe.source.includes('Personalizada');
+        return `
+          <div class="recipe-card">
+            <div class="recipe-card-header">
+              <div class="recipe-badge-row">
+                <span class="recipe-source-badge">${recipe.source}</span>
+                <span style="font-size: 0.72rem; font-weight: 700; color: var(--primary-dark);">${recipe.calories}</span>
+              </div>
+              <h3 class="recipe-card-title">${recipe.title}</h3>
+            </div>
+            <div class="recipe-card-body">
+              <div>
+                <div class="recipe-meta">
+                  <span>⏱️ ${recipe.time}</span>
+                  <span>🍽️ ${recipe.moment.map(m => m[0].toUpperCase() + m.slice(1)).join('/')}</span>
+                </div>
+                <div class="recipe-ingredients-preview">
+                  <strong>Ingredientes:</strong> ${ingredientsSample}
+                </div>
+              </div>
+              <div style="display: flex; gap: 0.45rem; margin-top: 0.75rem;">
+                <button class="btn btn-secondary" style="flex: 1; justify-content: center; font-size: 0.8rem;" onclick="openModal('${recipe.id}')">Ver Receta</button>
+                <button class="btn btn-primary" style="padding: 0.45rem 0.65rem; font-size: 0.8rem;" title="Añadir al Menú" onclick="quickAddPrompt('${recipe.id}')">➕ Menú</button>
+                ${isCustom ? `<button class="btn btn-danger" style="padding: 0.45rem 0.65rem; font-size: 0.8rem;" title="Eliminar receta" onclick="deleteCustomRecipe('${recipe.id}')">🗑️</button>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function quickAddPrompt(recipeId) {
+      const dayName = prompt("¿A qué día deseas añadir esta receta?\n(Escribe: lunes, martes, miercoles, jueves, viernes, sabado o domingo)");
+      if (!dayName) return;
+
+      const norm = dayName.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const mapDays = {
+        "lunes": "lun", "martes": "mar", "miercoles": "mie", "jueves": "jue",
+        "viernes": "vie", "sabado": "sab", "domingo": "dom"
+      };
+
+      const dayId = mapDays[norm];
+      if (!dayId) {
+        alert("Día no reconocido. Por favor escribe un día válido (ej: lunes).");
+        return;
+      }
+
+      const recipe = RECIPES.find(r => r.id === recipeId);
+      const moment = recipe.moment[0] || 'almuerzo';
+
+      setDayMeal(dayId, moment, recipeId);
+      alert(`¡Receta "${recipe.title}" asignada al ${norm.toUpperCase()} (${moment})!`);
+    }
+
+    // ==========================================
+    // MODAL DE DETALLE DE RECETA
+    // ==========================================
+    function openModal(recipeId) {
+      const recipe = RECIPES.find(r => r.id === recipeId);
+      if (!recipe) return;
+
+      document.getElementById("modalSourceBadge").innerText = recipe.source;
+      document.getElementById("modalTitle").innerText = recipe.title;
+      document.getElementById("modalMeta").innerText = `Tiempo: ${recipe.time} • Calorías: ${recipe.calories} • Momentos: ${recipe.moment.join(', ')}`;
+
+      const dinersText = currentDiners === 1 ? "1 porción (Sylvia)" : `${currentDiners} porciones`;
+      document.getElementById("modalDinersLabel").innerText = dinersText;
+
+      const ingUl = document.getElementById("modalIngredients");
+      ingUl.innerHTML = recipe.ingredients.map(ing => {
+        const scaledQty = ing.qty * currentDiners;
+        return `<li><strong>${ing.name}:</strong> ${scaledQty} ${ing.unit}</li>`;
+      }).join('');
+
+      const stepsOl = document.getElementById("modalSteps");
+      stepsOl.innerHTML = recipe.steps.map(step => `<li>${step}</li>`).join('');
+
+      const tipDiv = document.getElementById("modalTip");
+      tipDiv.innerHTML = `<strong>💡 Consejo Nutricional:</strong> ${recipe.tip || "Alineado con las directivas del plan nutricional."}`;
+
+      document.getElementById("recipeModal").classList.add("open");
+    }
+
+    function closeModal() {
+      document.getElementById("recipeModal").classList.remove("open");
+    }
+
+    // ==========================================
+    // MODAL CREAR NUEVA RECETA PERSONALIZADA
+    // ==========================================
+    function openCreateRecipeModal() {
+      document.getElementById("newRecipeForm").reset();
+      document.getElementById("recipeFormWarning").style.display = "none";
+      setupNewRecipeIngredientRow();
+      document.getElementById("createRecipeModal").classList.add("open");
+    }
+
+    function closeCreateRecipeModal() {
+      document.getElementById("createRecipeModal").classList.remove("open");
+    }
+
+    function setupNewRecipeIngredientRow() {
+      const list = document.getElementById("newRecIngredientsList");
+      if (!list) return;
+      list.innerHTML = "";
+      addIngredientRow("Pechuga de pollo", 150, "g", "Carnes y Pescados");
+      addIngredientRow("Zapallito verde", 100, "g", "Verduras y Frutas");
+    }
+
+    function addIngredientRow(name = "", qty = "", unit = "g", cat = "Verduras y Frutas") {
+      const list = document.getElementById("newRecIngredientsList");
+      const row = document.createElement("div");
+      row.style.display = "grid";
+      row.style.gridTemplateColumns = "2fr 1fr 1fr 2fr auto";
+      row.style.gap = "0.4rem";
+      row.style.alignItems = "center";
+
+      row.innerHTML = `
+        <input type="text" class="form-control ing-name" placeholder="Ingrediente" value="${name}" required oninput="checkIngredientBan(this.value)">
+        <input type="number" class="form-control ing-qty" placeholder="Cant." value="${qty}" required min="1">
+        <input type="text" class="form-control ing-unit" placeholder="g / un" value="${unit}" required>
+        <select class="form-control ing-cat">
+          <option value="Carnes y Pescados" ${cat==='Carnes y Pescados'?'selected':''}>Carnes / Pescados</option>
+          <option value="Lácteos y Huevos" ${cat==='Lácteos y Huevos'?'selected':''}>Lácteos / Huevos</option>
+          <option value="Verduras y Frutas" ${cat==='Verduras y Frutas'?'selected':''}>Verduras / Frutas</option>
+          <option value="Despensa y Cereales" ${cat==='Despensa y Cereales'?'selected':''}>Despensa / Cereales</option>
+          <option value="Condimentos y Aceites" ${cat==='Condimentos y Aceites'?'selected':''}>Condimentos</option>
+        </select>
+        <button type="button" class="btn btn-danger" style="padding: 0.35rem 0.55rem;" onclick="this.parentElement.remove()">✕</button>
+      `;
+      list.appendChild(row);
+    }
+
+    function checkIngredientBan(text) {
+      const banned = ["banana", "platano", "palta", "aguacate", "papa", "patata", "batata", "mandioca", "remolacha", "azucar", "miel"];
+      const warnDiv = document.getElementById("recipeFormWarning");
+      const found = banned.find(b => text.toLowerCase().includes(b));
+
+      if (found) {
+        warnDiv.style.display = "block";
+        warnDiv.className = "rule-callout-danger";
+        warnDiv.innerHTML = `⚠️ <strong>Advertencia Nutricional:</strong> Has escrito "${found.toUpperCase()}". Recuerda que este alimento está restringido en el plan nutricional de Sylvia por su alta carga calórica o glucémica. Te sugerimos sustituirlo por zapallito, manzana, acelga o edulcorante sin calorías.`;
+      } else {
+        warnDiv.style.display = "none";
+      }
+    }
+
+    function saveCustomRecipe(e) {
+      e.preventDefault();
+      const title = document.getElementById("newRecTitle").value.trim();
+      const moment = [document.getElementById("newRecMoment").value];
+      const category = document.getElementById("newRecCategory").value;
+      const time = document.getElementById("newRecTime").value.trim() || "15 min";
+      const calories = document.getElementById("newRecCalories").value.trim() || "200 kcal";
+      const stepsRaw = document.getElementById("newRecSteps").value.trim();
+      const tip = document.getElementById("newRecTip").value.trim() || "Receta personalizada de Sylvia.";
+
+      const ingRows = document.querySelectorAll("#newRecIngredientsList > div");
+      const ingredients = [];
+
+      ingRows.forEach(row => {
+        const name = row.querySelector(".ing-name").value.trim();
+        const qty = parseFloat(row.querySelector(".ing-qty").value) || 1;
+        const unit = row.querySelector(".ing-unit").value.trim() || "g";
+        const cat = row.querySelector(".ing-cat").value;
+        if (name) {
+          ingredients.push({ name, qty, unit, category: cat });
+        }
+      });
+
+      if (ingredients.length === 0) {
+        alert("Debes agregar al menos 1 ingrediente.");
+        return;
+      }
+
+      const steps = stepsRaw.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+
+      const newRec = {
+        id: "custom_" + Date.now(),
+        title,
+        moment,
+        category,
+        time,
+        protein: ingredients[0].name,
+        calories,
+        source: "Personalizada Sylvia 🌟",
+        ingredients,
+        steps,
+        tip
+      };
+
+      // Guardar en localStorage
+      const savedCustom = localStorage.getItem("plan_sylvia_custom_recipes");
+      let customRecipes = [];
+      if (savedCustom) {
+        try { customRecipes = JSON.parse(savedCustom); } catch (err) { customRecipes = []; }
+      }
+      customRecipes.push(newRec);
+      localStorage.setItem("plan_sylvia_custom_recipes", JSON.stringify(customRecipes));
+
+      // Actualizar listado activo
+      RECIPES.push(newRec);
+      document.getElementById("totalRecipesBadge").innerText = RECIPES.length;
+
+      filterRecipes();
+      renderPlanner();
+      closeCreateRecipeModal();
+      alert(`¡Receta "${title}" guardada exitosamente! Ya puedes asignarla en tu Menú Semanal.`);
+    }
+
+    function deleteCustomRecipe(recId) {
+      if (!confirm("¿Deseas eliminar esta receta personalizada?")) return;
+
+      const savedCustom = localStorage.getItem("plan_sylvia_custom_recipes");
+      if (savedCustom) {
+        let customRecipes = JSON.parse(savedCustom);
+        customRecipes = customRecipes.filter(r => r.id !== recId);
+        localStorage.setItem("plan_sylvia_custom_recipes", JSON.stringify(customRecipes));
+      }
+
+      RECIPES = RECIPES.filter(r => r.id !== recId);
+      document.getElementById("totalRecipesBadge").innerText = RECIPES.length;
+      filterRecipes();
+      renderPlanner();
+      updateShoppingList();
+    }
+
+    // ==========================================
+    // SEMÁFORO Y CONSULTA DE ALIMENTOS
+    // ==========================================
+    function checkFood() {
+      const input = document.getElementById("foodCheckInput").value.toLowerCase().trim();
+      const res = document.getElementById("foodCheckResult");
+      if (!input) return;
+
+      const banned = [
+        { key: "banana", reason: "Alto índice glucémico y fructosa simple. Provoca picos de insulina y frena la quema de grasa.", substitute: "Manzana verde, pera o durazno (100g)." },
+        { key: "platano", reason: "Alto índice glucémico y fructosa simple. Provoca picos de insulina y frena la quema de grasa.", substitute: "Manzana verde, pera o durazno (100g)." },
+        { key: "mango", reason: "Elevada carga glucémica que estimula el almacenamiento calórico.", substitute: "Mamón (papaya) o naranja fresca permitida." },
+        { key: "uva", reason: "Muy rica en azúcares libres de absorción inmediata.", substitute: "Frutillas o ciruelas frescas (100g)." },
+        { key: "palta", reason: "Alta densidad calórica (250-320 kcal de pura grasa). En déficit estricto frena el avance.", substitute: "1 cucharadita de aceite de oliva crudo o queso blanco descremado con hierbas." },
+        { key: "aguacate", reason: "Alta densidad calórica (250-320 kcal de pura grasa). En déficit estricto frena el avance.", substitute: "1 cucharadita de aceite de oliva crudo o queso blanco descremado con hierbas." },
+        { key: "papa", reason: "Almidón gelatinizable de rápida digestión. Solo se permiten 50g hervidos en el zapallito relleno.", substitute: "Zapallito verde, calabacín, repollo o coliflor." },
+        { key: "patata", reason: "Almidón gelatinizable de rápida digestión.", substitute: "Zapallito verde, calabacín o ensalada de hojas verdes." },
+        { key: "batata", reason: "Tubérculo de alto contenido de almidón y carbohidratos.", substitute: "Zanahoria cocida en porción controlada (máx 50-100g)." },
+        { key: "camote", reason: "Tubérculo de alto contenido de almidón y carbohidratos.", substitute: "Zanahoria cocida o zapallito." },
+        { key: "mandioca", reason: "Carga extrema de almidón refinado y tapioca.", substitute: "Vegetales de volumen acuoso (acelga, tomate, pepino)." },
+        { key: "yuca", reason: "Carga extrema de almidón refinado y tapioca.", substitute: "Vegetales de volumen acuoso." },
+        { key: "remolacha", reason: "Alta concentración de azúcares simples al cocinarse.", substitute: "Tomate fresco, zanahoria rallada o repollo morado." },
+        { key: "azucar", reason: "Calorías vacías que detienen por completo la lipólisis.", substitute: "Sucralosa, Stevia Ka'a he'ê o Splenda." },
+        { key: "miel", reason: "Pura fructosa y glucosa de asimilación ultra-rápida.", substitute: "Edulcorantes permitidos sin calorías." },
+        { key: "mayonesa", reason: "La mayonesa común tiene exceso de aceites refinados.", substitute: "Mayonesa light (máx 1 cda) o yogurt descremado con limón y mostaza." }
+      ];
+
+      const match = banned.find(b => input.includes(b.key));
+      if (match) {
+        res.innerHTML = `
+          <div style="background: var(--danger-light); border: 1px solid #fca5a5; padding: 0.85rem; border-radius: 8px; color: #9f1239; margin-top: 0.5rem;">
+            <strong>🔴 ALIMENTO RESTRINGIDO:</strong> "${input.toUpperCase()}"<br>
+            <strong>¿Por qué?</strong> ${match.reason}<br>
+            <strong>Sustituto permitido:</strong> ${match.substitute}
+          </div>
+        `;
+      } else {
+        res.innerHTML = `
+          <div style="background: var(--primary-light); border: 1px solid var(--primary-border); padding: 0.85rem; border-radius: 8px; color: var(--primary-dark); margin-top: 0.5rem;">
+            <strong>🟢 ALIMENTO COMPATIBLE:</strong> "${input.toUpperCase()}" está contemplado o es compatible con el plan en las porciones controladas correspondientes.
+          </div>
+        `;
+      }
+    }
+
+    // Inicializar al cargar el DOM
+    document.addEventListener("DOMContentLoaded", () => {
+      initApp();
+    });
+  </script>
+</body>
+</html>

@@ -2131,7 +2131,325 @@
     }
 
     // ==========================================
-    // LISTA DE COMPRAS DINÁMICA (CON MULTIPLICADOR)
+    // CANONICALIZACIÓN Y DESGLOSE INTELIGENTE DE INGREDIENTES
+    // ==========================================
+    function decomposeAndCanonicalizeIngredient(rawName, rawQty, rawUnit, defaultCategory) {
+      const n = (rawName || "").trim().toLowerCase();
+      const qty = parseFloat(rawQty) || 0;
+      const unit = (rawUnit || "").trim().toLowerCase();
+      const results = [];
+
+      // 1. Ensalada mix compuesta -> Desglosar en Lechuga, Tomate y Pepino en gramos
+      if (n.includes("ensalada mix") || (n.includes("lechuga") && n.includes("tomate") && n.includes("pepino"))) {
+        const totalGrams = (unit === "g" ? qty : (qty * 350));
+        results.push({ name: "Lechuga", qty: Math.round(totalGrams * 0.45), unit: "g", category: "Verduras y Frutas" });
+        results.push({ name: "Tomate", qty: Math.round(totalGrams * 0.35), unit: "g", category: "Verduras y Frutas" });
+        results.push({ name: "Pepino", qty: Math.round(totalGrams * 0.20), unit: "g", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 2. Lechuga y tomate picados
+      if (n.includes("lechuga y tomate") || n.includes("lechuga, tomate")) {
+        const totalGrams = (unit === "g" ? qty : 150);
+        results.push({ name: "Lechuga", qty: Math.round(totalGrams * 0.60), unit: "g", category: "Verduras y Frutas" });
+        results.push({ name: "Tomate", qty: Math.round(totalGrams * 0.40), unit: "g", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 3. Huevos enteros y claras -> Unificar SIEMPRE a "Huevo" en unidades
+      if (n.includes("huevo") || n.includes("clara")) {
+        let eggUnits = 0;
+        if (unit === "unidad" || unit === "unidades") {
+          eggUnits = qty;
+        } else if (unit === "g") {
+          if (n.includes("clara")) {
+            eggUnits = Math.max(1, Math.round(qty / 30));
+          } else {
+            eggUnits = Math.max(1, Math.round(qty / 50));
+          }
+        } else {
+          eggUnits = qty || 1;
+        }
+        results.push({ name: "Huevo", qty: Math.round(eggUnits), unit: "unidades", category: "Lácteos y Huevos" });
+        return results;
+      }
+
+      // 4. Tomate (fresco, cubos, perita, redondo) -> Unificar a "Tomate" en gramos
+      if (n.includes("tomate")) {
+        const grams = (unit === "g" ? qty : (unit.includes("unidad") ? qty * 150 : qty));
+        results.push({ name: "Tomate", qty: Math.round(grams), unit: "g", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 5. Pescado (merluza, filete blanco) -> Unificar a "Pescado" en gramos
+      if (n.includes("pescado") || n.includes("merluza")) {
+        const grams = (unit === "g" ? qty : 200);
+        results.push({ name: "Pescado", qty: Math.round(grams), unit: "g", category: "Carnes y Pescados" });
+        return results;
+      }
+
+      // 6. Pollo (pechuga filetes, deshuesada, cubos, picada) -> Unificar a "Pechuga de pollo" en gramos
+      if (n.includes("pollo") || n.includes("pechuga")) {
+        const grams = (unit === "g" ? qty : 150);
+        results.push({ name: "Pechuga de pollo", qty: Math.round(grams), unit: "g", category: "Carnes y Pescados" });
+        return results;
+      }
+
+      // 7. Carne vacuna (lomo, bife, magra) -> Unificar a "Carne magra (lomo / bife)" en gramos
+      if (n.includes("carne") || n.includes("bife") || n.includes("lomo")) {
+        const grams = (unit === "g" ? qty : 100);
+        results.push({ name: "Carne magra (lomo / bife)", qty: Math.round(grams), unit: "g", category: "Carnes y Pescados" });
+        return results;
+      }
+
+      // 8. Zapallito / Zucchini -> Unificar a "Zapallito verde" en gramos
+      if (n.includes("zapallito") || n.includes("zucchini")) {
+        const grams = (unit === "g" ? qty : (unit.includes("unidad") ? qty * 150 : qty));
+        results.push({ name: "Zapallito verde", qty: Math.round(grams), unit: "g", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 9. Combinaciones de verduras y ajo/cebolla
+      if (n.includes("cebolla y ajo")) {
+        const total = (unit === "g" ? qty : 50);
+        results.push({ name: "Cebolla", qty: Math.round(total * 0.8), unit: "g", category: "Verduras y Frutas" });
+        results.push({ name: "Ajo", qty: 1, unit: "dientes", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      if (n.includes("perejil y ajo")) {
+        const total = (unit === "g" ? qty : 10);
+        results.push({ name: "Perejil", qty: Math.round(total * 0.7), unit: "g", category: "Verduras y Frutas" });
+        results.push({ name: "Ajo", qty: 1, unit: "dientes", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      if (n.includes("cebolla de verdeo y locote")) {
+        const total = (unit === "g" ? qty : 50);
+        results.push({ name: "Cebolla de verdeo", qty: Math.round(total * 0.5), unit: "g", category: "Verduras y Frutas" });
+        results.push({ name: "Locote (pimiento)", qty: Math.round(total * 0.5), unit: "g", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 10. Especias compuestas desglosadas por separado
+      if (n.includes("sal y ajo en polvo") || n.includes("ajo en polvo y sal")) {
+        results.push({ name: "Sal", qty: 3, unit: "g", category: "Condimentos y Aceites" });
+        results.push({ name: "Ajo en polvo", qty: 3, unit: "g", category: "Condimentos y Aceites" });
+        return results;
+      }
+
+      if (n.includes("ajo en polvo") && n.includes("orégano")) {
+        results.push({ name: "Ajo en polvo", qty: 3, unit: "g", category: "Condimentos y Aceites" });
+        results.push({ name: "Orégano", qty: 2, unit: "g", category: "Condimentos y Aceites" });
+        return results;
+      }
+
+      if (n.includes("nuez moscada") && (n.includes("pimienta") || n.includes("sal"))) {
+        results.push({ name: "Nuez moscada", qty: 2, unit: "g", category: "Condimentos y Aceites" });
+        if (n.includes("pimienta")) results.push({ name: "Pimienta negra", qty: 2, unit: "g", category: "Condimentos y Aceites" });
+        if (n.includes("sal")) results.push({ name: "Sal", qty: 3, unit: "g", category: "Condimentos y Aceites" });
+        return results;
+      }
+
+      if (n.includes("sal y pimienta") || (n.includes("sal") && n.includes("pimienta") && !n.includes("nuez"))) {
+        results.push({ name: "Sal", qty: 3, unit: "g", category: "Condimentos y Aceites" });
+        results.push({ name: "Pimienta negra", qty: 2, unit: "g", category: "Condimentos y Aceites" });
+        return results;
+      }
+
+      if (n.includes("orégano") && (n.includes("pimienta") || n.includes("sal") || n.includes("ciboulette"))) {
+        results.push({ name: "Orégano", qty: 3, unit: "g", category: "Condimentos y Aceites" });
+        if (n.includes("pimienta")) results.push({ name: "Pimienta negra", qty: 2, unit: "g", category: "Condimentos y Aceites" });
+        if (n.includes("sal")) results.push({ name: "Sal", qty: 3, unit: "g", category: "Condimentos y Aceites" });
+        return results;
+      }
+
+      if (n.includes("pimienta y provenzal")) {
+        results.push({ name: "Pimienta negra", qty: 2, unit: "g", category: "Condimentos y Aceites" });
+        results.push({ name: "Provenzal", qty: 3, unit: "g", category: "Condimentos y Aceites" });
+        return results;
+      }
+
+      // 11. Cebolla
+      if (n.includes("cebolla") && !n.includes("verdeo")) {
+        const grams = (unit === "g" ? qty : (unit.includes("unidad") ? qty * 150 : qty));
+        results.push({ name: "Cebolla", qty: Math.round(grams), unit: "g", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 12. Ajo
+      if (n.includes("diente de ajo") || n === "ajo") {
+        results.push({ name: "Ajo", qty: Math.max(1, Math.round(qty)), unit: "dientes", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 13. Limón
+      if (n.includes("limón") || n.includes("zumo de limón")) {
+        const un = (unit.includes("unidad") ? qty : Math.max(1, Math.round(qty / 35)));
+        results.push({ name: "Limón", qty: Math.round(un), unit: "unidades", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 14. Lechuga
+      if (n.includes("lechuga")) {
+        const grams = (unit === "g" ? qty : 100);
+        results.push({ name: "Lechuga", qty: Math.round(grams), unit: "g", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 15. Pepino
+      if (n.includes("pepino")) {
+        const grams = (unit === "g" ? qty : 100);
+        results.push({ name: "Pepino", qty: Math.round(grams), unit: "g", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 16. Zanahoria
+      if (n.includes("zanahoria")) {
+        const grams = (unit === "g" ? qty : 100);
+        results.push({ name: "Zanahoria", qty: Math.round(grams), unit: "g", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 17. Espinacas
+      if (n.includes("espinaca")) {
+        const grams = (unit === "g" ? qty : 100);
+        results.push({ name: "Espinaca", qty: Math.round(grams), unit: "g", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 18. Acelga
+      if (n.includes("acelga")) {
+        const grams = (unit === "g" ? qty : 100);
+        results.push({ name: "Acelga", qty: Math.round(grams), unit: "g", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 19. Avena
+      if (n.includes("avena")) {
+        const grams = (unit === "g" ? qty : 30);
+        results.push({ name: "Avena Quaker", qty: Math.round(grams), unit: "g", category: "Despensa y Cereales" });
+        return results;
+      }
+
+      // 20. Cereales sin azúcar
+      if (n.includes("cereales ricos en fibra") || n.includes("all bran") || n.includes("fibra max")) {
+        const grams = (unit === "g" ? qty : 30);
+        results.push({ name: "Cereales ricos en fibra (All Bran)", qty: Math.round(grams), unit: "g", category: "Despensa y Cereales" });
+        return results;
+      }
+
+      // 21. Yogurt descremado
+      if (n.includes("yogurt")) {
+        const grams = (unit === "g" ? qty : 125);
+        results.push({ name: "Yogurt descremado (0% grasa)", qty: Math.round(grams), unit: "g", category: "Lácteos y Huevos" });
+        return results;
+      }
+
+      // 22. Queso blanco descremado
+      if (n.includes("queso blanco")) {
+        const grams = (unit === "g" ? qty : 35);
+        results.push({ name: "Queso blanco descremado", qty: Math.round(grams), unit: "g", category: "Lácteos y Huevos" });
+        return results;
+      }
+
+      // 23. Queso parmesano
+      if (n.includes("parmesano")) {
+        const grams = (unit === "g" ? qty : 10);
+        results.push({ name: "Queso parmesano", qty: Math.round(grams), unit: "g", category: "Lácteos y Huevos" });
+        return results;
+      }
+
+      // 24. Leche descremada
+      if (n.includes("leche")) {
+        const ml = (unit === "ml" ? qty : 100);
+        results.push({ name: "Leche descremada", qty: Math.round(ml), unit: "ml", category: "Lácteos y Huevos" });
+        return results;
+      }
+
+      // 25. Atún
+      if (n.includes("atún") || n.includes("atun")) {
+        const grams = (unit === "g" ? qty : 100);
+        results.push({ name: "Atún al agua", qty: Math.round(grams), unit: "g", category: "Carnes y Pescados" });
+        return results;
+      }
+
+      // 26. Frutas permitidas
+      if (n.includes("manzana") || n.includes("pera") || n.includes("fruta permitida") || n.includes("durazno") || n.includes("naranja")) {
+        const grams = (unit === "g" ? qty : 120);
+        results.push({ name: "Fruta fresca permitida (manzana/pera)", qty: Math.round(grams), unit: "g", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 27. Aceite de oliva
+      if (n.includes("aceite")) {
+        const ml = (unit === "ml" ? qty : 5);
+        results.push({ name: "Aceite de oliva virgen extra", qty: Math.round(ml), unit: "ml", category: "Condimentos y Aceites" });
+        return results;
+      }
+
+      // 28. Vinagre
+      if (n.includes("vinagre") && !n.includes("rocío")) {
+        const ml = (unit === "ml" ? qty : 10);
+        results.push({ name: "Vinagre de manzana", qty: Math.round(ml), unit: "ml", category: "Condimentos y Aceites" });
+        return results;
+      }
+
+      // 29. Rocío vegetal Fritolín
+      if (n.includes("rocío vegetal") || n.includes("fritolín")) {
+        results.push({ name: "Rocío vegetal Fritolín", qty: 1, unit: "aerosol", category: "Condimentos y Aceites" });
+        return results;
+      }
+
+      // 30. Maizena / Harina
+      if (n.includes("maizena") || n.includes("harina de trigo") || n.includes("harina")) {
+        const grams = (unit === "g" ? qty : 15);
+        results.push({ name: "Maizena (almidón de maíz)", qty: Math.round(grams), unit: "g", category: "Despensa y Cereales" });
+        return results;
+      }
+
+      // 31. Champiñones
+      if (n.includes("champiñón") || n.includes("champiñon")) {
+        const grams = (unit === "g" ? qty : 150);
+        results.push({ name: "Champiñones frescos", qty: Math.round(grams), unit: "g", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // 32. Palmitos
+      if (n.includes("palmito")) {
+        const grams = (unit === "g" ? qty : 50);
+        results.push({ name: "Palmitos en conserva", qty: Math.round(grams), unit: "g", category: "Despensa y Cereales" });
+        return results;
+      }
+
+      // 33. Choclo
+      if (n.includes("choclo")) {
+        const grams = (unit === "g" ? qty : 100);
+        results.push({ name: "Choclo en grano", qty: Math.round(grams), unit: "g", category: "Despensa y Cereales" });
+        return results;
+      }
+
+      // 34. Jamón cocido
+      if (n.includes("jamón") || n.includes("jamon")) {
+        const grams = (unit === "g" ? qty : 25);
+        results.push({ name: "Jamón cocido magro", qty: Math.round(grams), unit: "g", category: "Carnes y Pescados" });
+        return results;
+      }
+
+      // 35. Repollo
+      if (n.includes("repollo")) {
+        const grams = (unit === "g" ? qty : 150);
+        results.push({ name: "Repollo", qty: Math.round(grams), unit: "g", category: "Verduras y Frutas" });
+        return results;
+      }
+
+      // Fallback genérico
+      results.push({ name: rawName.trim(), qty: Math.round(qty), unit: rawUnit, category: defaultCategory });
+      return results;
+    }
+
+    // ==========================================
+    // LISTA DE COMPRAS DINÁMICA (CONSOLIDADA Y UNIFICADA)
     // ==========================================
     function updateShoppingList() {
       const container = document.getElementById("shoppingCategories");
@@ -2152,16 +2470,20 @@
           if (!rec) return;
 
           totalMeals++;
-          rec.ingredients.forEach(ing => {
-            const cat = ing.category || "Varios";
-            if (!aggregated[cat]) aggregated[cat] = {};
+          rec.ingredients.forEach(rawIng => {
+            const scaledQty = (rawIng.qty || 1) * currentDiners;
+            const items = decomposeAndCanonicalizeIngredient(rawIng.name, scaledQty, rawIng.unit, rawIng.category);
 
-            const key = ing.name.trim();
-            if (!aggregated[cat][key]) {
-              aggregated[cat][key] = { qty: 0, unit: ing.unit };
-            }
-            // Multiplicar por la cantidad de comensales seleccionados
-            aggregated[cat][key].qty += (ing.qty * currentDiners);
+            items.forEach(item => {
+              const cat = item.category || "Varios";
+              if (!aggregated[cat]) aggregated[cat] = {};
+
+              const key = item.name.trim();
+              if (!aggregated[cat][key]) {
+                aggregated[cat][key] = { qty: 0, unit: item.unit };
+              }
+              aggregated[cat][key].qty += item.qty;
+            });
           });
         });
       });
@@ -2190,7 +2512,13 @@
         "Condimentos y Aceites": "🧂"
       };
 
-      for (const [cat, items] of Object.entries(aggregated)) {
+      // Orden de categorías prioritario
+      const catOrder = ["Carnes y Pescados", "Lácteos y Huevos", "Verduras y Frutas", "Despensa y Cereales", "Condimentos y Aceites"];
+
+      catOrder.forEach(cat => {
+        const items = aggregated[cat];
+        if (!items || Object.keys(items).length === 0) return;
+
         html += `
           <div class="category-group">
             <div class="category-title">
@@ -2199,10 +2527,22 @@
             <ul class="ingredient-list">
         `;
 
-        for (const [name, data] of Object.entries(items)) {
+        // Ordenar alfabéticamente los ingredientes dentro de la categoría
+        const sortedKeys = Object.keys(items).sort((a, b) => a.localeCompare(b, 'es'));
+
+        sortedKeys.forEach(name => {
           uniqueCount++;
+          const data = items[name];
           const isChecked = checkedShoppingItems.has(name);
-          const hasInPantry = Array.from(currentPantry).some(p => name.toLowerCase().includes(p.toLowerCase()) || p.toLowerCase().includes(name.toLowerCase()));
+          const hasInPantry = Array.from(currentPantry).some(p => {
+            const pNorm = p.toLowerCase();
+            const nNorm = name.toLowerCase();
+            return nNorm.includes(pNorm) || pNorm.includes(nNorm);
+          });
+
+          // Si es rocío vegetal y da más de 1 aerosol, dejar en 1
+          let displayQty = data.qty;
+          if (data.unit === "aerosol") displayQty = 1;
 
           html += `
             <li class="ingredient-item ${isChecked ? 'checked' : ''}">
@@ -2211,13 +2551,13 @@
                 <span>${name}</span>
                 ${hasInPantry ? `<span style="font-size: 0.7rem; background: #e0f2fe; color: #0369a1; padding: 1px 6px; border-radius: 4px; font-weight: 600;">En tu despensa</span>` : ''}
               </div>
-              <span class="ingredient-qty">${data.qty} ${data.unit}</span>
+              <span class="ingredient-qty">${displayQty} ${data.unit}</span>
             </li>
           `;
-        }
+        });
 
         html += `</ul></div>`;
-      }
+      });
 
       container.innerHTML = html;
       document.getElementById("uniqueIngredientsCount").innerText = uniqueCount;

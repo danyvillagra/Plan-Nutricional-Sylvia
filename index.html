@@ -849,6 +849,7 @@
           <button class="btn btn-whatsapp" onclick="shareShoppingListWhatsApp()">💬 Enviar a WhatsApp</button>
           <button class="btn btn-primary" onclick="copyShoppingList()">📋 Copiar Lista</button>
           <button class="btn btn-secondary" onclick="printShoppingList()">🖨️ Imprimir / PDF</button>
+        <button class="btn btn-secondary" style="font-size: 0.78rem;" onclick="forceAppRefresh()">🔄 Actualizar App</button>
         </div>
       </div>
 
@@ -1146,7 +1147,7 @@
         calories: "220 kcal",
         source: "Plan Oficial Sylvia",
         ingredients: [
-          { name: "Huevos enteros", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
+          { name: "Huevo", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
           { name: "Fruta permitida (manzana o pera)", qty: 100, unit: "g", category: "Verduras y Frutas" },
           { name: "Café o té sin azúcar ni leche", qty: 1, unit: "taza", category: "Condimentos y Aceites" },
           { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
@@ -1193,7 +1194,7 @@
         calories: "190 kcal",
         source: "Nutri Maga",
         ingredients: [
-          { name: "Huevo entero", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
+          { name: "Huevo", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
           { name: "Harina de avena o avena molida", qty: 30, unit: "g", category: "Despensa y Cereales" },
           { name: "Cacao amargo 100% puro en polvo", qty: 5, unit: "g", category: "Despensa y Cereales" },
           { name: "Leche descremada", qty: 30, unit: "ml", category: "Lácteos y Huevos" },
@@ -1220,9 +1221,10 @@
         source: "Investigación Web Fit",
         ingredients: [
           { name: "Avena tradicional o en hojuelas", qty: 35, unit: "g", category: "Despensa y Cereales" },
-          { name: "Huevos enteros (o 2 claras)", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
+          { name: "Huevo", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
           { name: "Espinacas frescas tiernas", qty: 40, unit: "g", category: "Verduras y Frutas" },
-          { name: "Pizca de sal y ajo en polvo", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
+          { name: "Sal", qty: 2, unit: "g", category: "Condimentos y Aceites" },
+          { name: "Ajo en polvo", qty: 2, unit: "g", category: "Condimentos y Aceites" },
           { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
         ],
         steps: [
@@ -1284,7 +1286,7 @@
         calories: "75 kcal",
         source: "Guía Rápida Meal Prep",
         ingredients: [
-          { name: "Huevo entero duro", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
+          { name: "Huevo", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
           { name: "Pizca de orégano y sal", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
           { name: "Café o té sin azúcar", qty: 1, unit: "taza", category: "Condimentos y Aceites" }
         ],
@@ -1352,9 +1354,9 @@
         calories: "270 kcal",
         source: "Plan Oficial Sylvia",
         ingredients: [
-          { name: "Carne magra / Bife de lomo", qty: 100, unit: "g", category: "Carnes y Pescados" },
+          { name: "Carne magra (lomo / bife)", qty: 100, unit: "g", category: "Carnes y Pescados" },
           { name: "Cebolla", qty: 150, unit: "g", category: "Verduras y Frutas" },
-          { name: "Tomate fresco", qty: 150, unit: "g", category: "Verduras y Frutas" },
+          { name: "Tomate", qty: 150, unit: "g", category: "Verduras y Frutas" },
           { name: "Diente de ajo", qty: 1, unit: "unidad", category: "Verduras y Frutas" },
           { name: "Perejil fresco", qty: 10, unit: "g", category: "Verduras y Frutas" },
           { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
@@ -1377,10 +1379,10 @@
         calories: "230 kcal",
         source: "Plan Oficial Sylvia",
         ingredients: [
-          { name: "Pechuga de pollo deshuesada", qty: 125, unit: "g", category: "Carnes y Pescados" },
+          { name: "Pechuga de pollo", qty: 125, unit: "g", category: "Carnes y Pescados" },
           { name: "Acelga fresca", qty: 50, unit: "g", category: "Verduras y Frutas" },
           { name: "Queso blanco descremado", qty: 35, unit: "g", category: "Lácteos y Huevos" },
-          { name: "Clara de huevo", qty: 30, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Huevo", qty: 1, unit: "unidades", category: "Lácteos y Huevos" },
           { name: "Nuez moscada y pimienta", qty: 1, unit: "pizca", category: "Condimentos y Aceites" }
         ],
         steps: [
@@ -1402,7 +1404,7 @@
         calories: "190 kcal",
         source: "Plan Oficial Sylvia",
         ingredients: [
-          { name: "Tomate redondo grande", qty: 150, unit: "g", category: "Verduras y Frutas" },
+          { name: "Tomate", qty: 150, unit: "g", category: "Verduras y Frutas" },
           { name: "Jamón cocido magro", qty: 25, unit: "g", category: "Carnes y Pescados" },
           { name: "Palmitos en conserva", qty: 50, unit: "g", category: "Despensa y Cereales" },
           { name: "Zanahoria rallada", qty: 50, unit: "g", category: "Verduras y Frutas" },
@@ -1428,7 +1430,7 @@
         source: "Plan Oficial Sylvia",
         ingredients: [
           { name: "Choclo en grano (1/2 lata)", qty: 100, unit: "g", category: "Despensa y Cereales" },
-          { name: "Huevo entero", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
+          { name: "Huevo", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
           { name: "Leche descremada", qty: 100, unit: "ml", category: "Lácteos y Huevos" },
           { name: "Queso blanco descremado", qty: 35, unit: "g", category: "Lácteos y Huevos" },
           { name: "Maizena (almidón de maíz)", qty: 10, unit: "g", category: "Despensa y Cereales" },
@@ -1453,11 +1455,13 @@
         calories: "240 kcal",
         source: "Plan Oficial Sylvia",
         ingredients: [
-          { name: "Pechuga de pollo en filetes", qty: 200, unit: "g", category: "Carnes y Pescados" },
+          { name: "Pechuga de pollo", qty: 200, unit: "g", category: "Carnes y Pescados" },
           { name: "Limón fresco", qty: 1, unit: "unidad", category: "Verduras y Frutas" },
           { name: "Aceite de oliva o girasol", qty: 5, unit: "ml", category: "Condimentos y Aceites" },
           { name: "Pimienta negra molida", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
-          { name: "Ensalada mix (lechuga, tomate, pepino)", qty: 350, unit: "g", category: "Verduras y Frutas" }
+          { name: "Lechuga", qty: 150, unit: "g", category: "Verduras y Frutas" },
+          { name: "Tomate", qty: 125, unit: "g", category: "Verduras y Frutas" },
+          { name: "Pepino", qty: 75, unit: "g", category: "Verduras y Frutas" }
         ],
         steps: [
           "Condimentar los filetes con pimienta y abundante zumo de limón.",
@@ -1476,11 +1480,12 @@
         calories: "280 kcal",
         source: "Plan Oficial Sylvia",
         ingredients: [
-          { name: "Zapallito verde redondo", qty: 150, unit: "g", category: "Verduras y Frutas" },
-          { name: "Carne lomo picada magra", qty: 100, unit: "g", category: "Carnes y Pescados" },
+          { name: "Zapallito verde", qty: 150, unit: "g", category: "Verduras y Frutas" },
+          { name: "Carne magra (lomo / bife)", qty: 100, unit: "g", category: "Carnes y Pescados" },
           { name: "Papa hervida en cubos pequeños", qty: 50, unit: "g", category: "Verduras y Frutas" },
-          { name: "Cebolla de verdeo y locote", qty: 50, unit: "g", category: "Verduras y Frutas" },
-          { name: "Tomate en cubos", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Cebolla de verdeo", qty: 25, unit: "g", category: "Verduras y Frutas" },
+          { name: "Locote (pimiento)", qty: 25, unit: "g", category: "Verduras y Frutas" },
+          { name: "Tomate", qty: 100, unit: "g", category: "Verduras y Frutas" },
           { name: "Queso parmesano rallado", qty: 10, unit: "g", category: "Lácteos y Huevos" }
         ],
         steps: [
@@ -1502,7 +1507,7 @@
         ingredients: [
           { name: "Leche descremada", qty: 125, unit: "ml", category: "Lácteos y Huevos" },
           { name: "Queso blanco descremado", qty: 35, unit: "g", category: "Lácteos y Huevos" },
-          { name: "Clara de huevo", qty: 30, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Huevo", qty: 1, unit: "unidades", category: "Lácteos y Huevos" },
           { name: "Harina de trigo o maizena", qty: 10, unit: "g", category: "Despensa y Cereales" },
           { name: "Aceite de oliva", qty: 3, unit: "ml", category: "Condimentos y Aceites" },
           { name: "Nuez moscada y sal marina", qty: 1, unit: "pizca", category: "Condimentos y Aceites" }
@@ -1525,10 +1530,13 @@
         calories: "260 kcal",
         source: "Plan Oficial Sylvia",
         ingredients: [
-          { name: "Pechuga de pollo picada", qty: 150, unit: "g", category: "Carnes y Pescados" },
+          { name: "Pechuga de pollo", qty: 150, unit: "g", category: "Carnes y Pescados" },
           { name: "Cebolla picada fina", qty: 30, unit: "g", category: "Verduras y Frutas" },
-          { name: "Perejil y ajo picados", qty: 10, unit: "g", category: "Verduras y Frutas" },
-          { name: "Ensalada mix (lechuga, tomate, pepino)", qty: 350, unit: "g", category: "Verduras y Frutas" },
+          { name: "Perejil", qty: 8, unit: "g", category: "Verduras y Frutas" },
+          { name: "Ajo", qty: 1, unit: "dientes", category: "Verduras y Frutas" },
+          { name: "Lechuga", qty: 150, unit: "g", category: "Verduras y Frutas" },
+          { name: "Tomate", qty: 125, unit: "g", category: "Verduras y Frutas" },
+          { name: "Pepino", qty: 75, unit: "g", category: "Verduras y Frutas" },
           { name: "Vinagre y rocío vegetal", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
         ],
         steps: [
@@ -1548,7 +1556,7 @@
         calories: "220 kcal",
         source: "Plan Oficial Sylvia",
         ingredients: [
-          { name: "Filete de pescado blanco (merluza)", qty: 200, unit: "g", category: "Carnes y Pescados" },
+          { name: "Pescado", qty: 200, unit: "g", category: "Carnes y Pescados" },
           { name: "Queso blanco descremado", qty: 35, unit: "g", category: "Lácteos y Huevos" },
           { name: "Vino blanco seco", qty: 50, unit: "ml", category: "Despensa y Cereales" },
           { name: "Aceite de oliva", qty: 5, unit: "ml", category: "Condimentos y Aceites" },
@@ -1573,7 +1581,7 @@
         ingredients: [
           { name: "Espinacas frescas", qty: 100, unit: "g", category: "Verduras y Frutas" },
           { name: "Leche descremada", qty: 50, unit: "ml", category: "Lácteos y Huevos" },
-          { name: "Clara de huevo", qty: 30, unit: "g", category: "Lácteos y Huevos" },
+          { name: "Huevo", qty: 1, unit: "unidades", category: "Lácteos y Huevos" },
           { name: "Maizena / Harina", qty: 10, unit: "g", category: "Despensa y Cereales" },
           { name: "Nuez moscada y pimienta", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
           { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
@@ -1596,7 +1604,7 @@
         calories: "195 kcal",
         source: "Plan Oficial Sylvia",
         ingredients: [
-          { name: "Huevo entero", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
+          { name: "Huevo", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
           { name: "Queso blanco descremado", qty: 35, unit: "g", category: "Lácteos y Huevos" },
           { name: "Queso parmesano rallado", qty: 5, unit: "g", category: "Lácteos y Huevos" },
           { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" },
@@ -1620,7 +1628,7 @@
         calories: "235 kcal",
         source: "Nutri Maga",
         ingredients: [
-          { name: "Pechuga de pollo en filetes", qty: 150, unit: "g", category: "Carnes y Pescados" },
+          { name: "Pechuga de pollo", qty: 150, unit: "g", category: "Carnes y Pescados" },
           { name: "Yogurt natural descremado", qty: 60, unit: "g", category: "Lácteos y Huevos" },
           { name: "Zumo de limón fresco", qty: 15, unit: "ml", category: "Verduras y Frutas" },
           { name: "Ajo en polvo y orégano", qty: 1, unit: "cdta", category: "Condimentos y Aceites" },
@@ -1643,10 +1651,10 @@
         calories: "290 kcal",
         source: "Nutri Maga",
         ingredients: [
-          { name: "Pechuga de pollo picada o procesada", qty: 150, unit: "g", category: "Carnes y Pescados" },
-          { name: "Zapallito verde rallado", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Pechuga de pollo", qty: 150, unit: "g", category: "Carnes y Pescados" },
+          { name: "Zapallito verde", qty: 100, unit: "g", category: "Verduras y Frutas" },
           { name: "Cebolla picada fina", qty: 50, unit: "g", category: "Verduras y Frutas" },
-          { name: "Huevo entero", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
+          { name: "Huevo", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
           { name: "Avena en hojuelas finas", qty: 30, unit: "g", category: "Despensa y Cereales" },
           { name: "Pimienta y provenzal", qty: 1, unit: "cdta", category: "Condimentos y Aceites" }
         ],
@@ -1667,10 +1675,11 @@
         calories: "295 kcal",
         source: "Nutri Maga",
         ingredients: [
-          { name: "Huevos enteros", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
+          { name: "Huevo", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
           { name: "Queso blanco descremado", qty: 35, unit: "g", category: "Lácteos y Huevos" },
           { name: "Atún al agua en lata", qty: 100, unit: "g", category: "Carnes y Pescados" },
-          { name: "Lechuga y tomate picados", qty: 150, unit: "g", category: "Verduras y Frutas" },
+          { name: "Lechuga", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Tomate", qty: 50, unit: "g", category: "Verduras y Frutas" },
           { name: "Orégano y sal", qty: 1, unit: "pizca", category: "Condimentos y Aceites" }
         ],
         steps: [
@@ -1690,11 +1699,12 @@
         calories: "275 kcal",
         source: "Nutri Maga",
         ingredients: [
-          { name: "Pechuga de pollo en cubos", qty: 150, unit: "g", category: "Carnes y Pescados" },
+          { name: "Pechuga de pollo", qty: 150, unit: "g", category: "Carnes y Pescados" },
           { name: "Espinacas frescas", qty: 100, unit: "g", category: "Verduras y Frutas" },
-          { name: "Tomate perita en cubos", qty: 100, unit: "g", category: "Verduras y Frutas" },
-          { name: "Cebolla y ajo picados", qty: 50, unit: "g", category: "Verduras y Frutas" },
-          { name: "Huevo entero", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
+          { name: "Tomate", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Cebolla", qty: 40, unit: "g", category: "Verduras y Frutas" },
+          { name: "Ajo", qty: 1, unit: "dientes", category: "Verduras y Frutas" },
+          { name: "Huevo", qty: 1, unit: "unidad", category: "Lácteos y Huevos" },
           { name: "Rocío vegetal Fritolín", qty: 1, unit: "toque", category: "Condimentos y Aceites" }
         ],
         steps: [
@@ -1714,8 +1724,8 @@
         calories: "190 kcal",
         source: "Investigación Web Fit",
         ingredients: [
-          { name: "Filete de merluza", qty: 200, unit: "g", category: "Carnes y Pescados" },
-          { name: "Zapallito o Zucchini en juliana", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Pescado", qty: 200, unit: "g", category: "Carnes y Pescados" },
+          { name: "Zapallito verde", qty: 100, unit: "g", category: "Verduras y Frutas" },
           { name: "Zanahoria en juliana fina", qty: 50, unit: "g", category: "Verduras y Frutas" },
           { name: "Limón en rodajas finas", qty: 1, unit: "unidad", category: "Verduras y Frutas" },
           { name: "Orégano seco y pimienta", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
@@ -1738,8 +1748,8 @@
         calories: "210 kcal",
         source: "Investigación Web Fit",
         ingredients: [
-          { name: "Zapallitos verdes medianos", qty: 300, unit: "g", category: "Verduras y Frutas" },
-          { name: "Huevos enteros", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
+          { name: "Zapallito verde", qty: 300, unit: "g", category: "Verduras y Frutas" },
+          { name: "Huevo", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
           { name: "Queso blanco descremado", qty: 50, unit: "g", category: "Lácteos y Huevos" },
           { name: "Cebolla picada fina", qty: 50, unit: "g", category: "Verduras y Frutas" },
           { name: "Nuez moscada y sal marina", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
@@ -1764,7 +1774,7 @@
         source: "Investigación Web Fit",
         ingredients: [
           { name: "Atún al agua en lata", qty: 100, unit: "g", category: "Carnes y Pescados" },
-          { name: "Huevos enteros", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
+          { name: "Huevo", qty: 2, unit: "unidades", category: "Lácteos y Huevos" },
           { name: "Espinacas frescas picadas", qty: 80, unit: "g", category: "Verduras y Frutas" },
           { name: "Avena en hojuelas", qty: 15, unit: "g", category: "Despensa y Cereales" },
           { name: "Orégano y pimienta", qty: 1, unit: "pizca", category: "Condimentos y Aceites" },
@@ -1813,7 +1823,7 @@
         ingredients: [
           { name: "Champiñones frescos limpios", qty: 150, unit: "g", category: "Verduras y Frutas" },
           { name: "Pepino cortado en cubitos", qty: 100, unit: "g", category: "Verduras y Frutas" },
-          { name: "Tomate perita en dados", qty: 100, unit: "g", category: "Verduras y Frutas" },
+          { name: "Tomate", qty: 100, unit: "g", category: "Verduras y Frutas" },
           { name: "Cebolla morada en pluma fina", qty: 40, unit: "g", category: "Verduras y Frutas" },
           { name: "Zumo de limón fresco", qty: 40, unit: "ml", category: "Verduras y Frutas" },
           { name: "Cilantro o perejil fresco picado", qty: 10, unit: "g", category: "Verduras y Frutas" }
@@ -1835,7 +1845,7 @@
         calories: "245 kcal",
         source: "Cocina Saludable Chile",
         ingredients: [
-          { name: "Pechuga de pollo en tiras", qty: 150, unit: "g", category: "Carnes y Pescados" },
+          { name: "Pechuga de pollo", qty: 150, unit: "g", category: "Carnes y Pescados" },
           { name: "Acelga fresca en juliana", qty: 100, unit: "g", category: "Verduras y Frutas" },
           { name: "Locote / Pimiento rojo y verde", qty: 60, unit: "g", category: "Verduras y Frutas" },
           { name: "Cebolla en tiras", qty: 50, unit: "g", category: "Verduras y Frutas" },
@@ -2585,6 +2595,23 @@
       }).catch(err => {
         alert("No se pudo copiar automáticamente. Puedes compartirla por WhatsApp o imprimir.");
       });
+    }
+
+    
+    function forceAppRefresh() {
+      if ('caches' in window) {
+        caches.keys().then(keys => {
+          keys.forEach(key => caches.delete(key));
+        });
+      }
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(regs => {
+          regs.forEach(reg => reg.unregister());
+        });
+      }
+      localStorage.removeItem("plan_sylvia_menu_4meals");
+      loadOfficialPlan(false);
+      window.location.reload(true);
     }
 
     function printShoppingList() {
